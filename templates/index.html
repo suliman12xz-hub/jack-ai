@@ -15,6 +15,17 @@
     #msg { flex:1; background:transparent; border:none; outline:none; color:white; font-size:18px; padding:12px; }
     button { border:none; border-radius:50%; width:48px; height:48px; background:#233a9f; color:white; font-size:22px; }
     #response { max-width:700px; margin:20px auto; color:#ddd; }
+
+.typing {
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
   </style>
 </head>
 <body>
@@ -44,6 +55,7 @@
 
       const responseBox = document.getElementById("response");
       responseBox.innerHTML += "<b>You:</b> " + message + "<br>";
+responseBox.innerHTML += '<b>Jack:</b> <span class="typing">● ● ●</span><br>';
 
       const res = await fetch("/chat", {
         method: "POST",
@@ -52,7 +64,7 @@
       });
 
       const data = await res.json();
-      responseBox.innerHTML += "<b>Jack:</b> " + data.reply + "<br><br>";
+      responseBox.innerHTML = responseBox.innerHTML.replace('<b>Jack:</b> <span class="typing">● ● ●</span><br>', '<b>Jack:</b> ' + data.reply + '<br><br>');
 
       input.value = "";
       input.focus();
