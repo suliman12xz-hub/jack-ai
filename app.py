@@ -1,13 +1,17 @@
 from flask import Flask, request, jsonify
+from openai import OpenAI
+import os
 
 app = Flask(__name__)
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/")
 def home():
     return """
     <h1>Jack AI 🤖</h1>
 
-    <input id="msg" placeholder="Type something..." />
+    <input id="msg" placeholder="Type..." />
     <button onclick="send()">Send</button>
 
     <p id="reply"></p>
@@ -19,7 +23,7 @@ def home():
         let res = await fetch("/chat", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({message: message})
+            body: JSON.stringify({message})
         });
 
         let data = await res.json();
@@ -30,14 +34,17 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    try:
-        data = request.get_json()
-        message = data.get("message", "")
+    data = request.get_json()
+    message = data.get("message", "")
 
-        return jsonify({"reply": "Jack AI: " + message})
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are Jack AI, a friendly assistant."},
+            {"role": "user", "content": message}
+        ]
+    )
 
-    except Exception as e:
-        return jsonify({"reply": "Error: " + str(e)})
+    reply = response.choices[0].message.content
 
-if __name__ == "__main__":
-    app.run()
+    return jsonify({"reply": reply})
