@@ -15,34 +15,20 @@ def chat():
 
     if "hello" in message or "hi" in message or "hallo" in message:
         reply = "Hello! I'm Jack AI 🤖"
-
     elif "how are you" in message:
         reply = "I'm doing great! How are you?"
-
     elif "who are you" in message:
         reply = "I'm Jack AI, your personal assistant."
-
-    elif "who made you" in message:
-        reply = "I was created by Mo 😎"
-
-    elif "joke" in message:
-        reply = "Why don't programmers like nature? It has too many bugs! 😂"
-
+    elif "your name" in message:
+        reply = "My name is Jack AI."
     elif "time" in message:
         reply = "Current time: " + datetime.now().strftime("%H:%M")
-
-    elif "date" in message:
-        reply = datetime.now().strftime("%d/%m/%Y")
-
-    elif message.replace("+","").isdigit() and "+" in message:
-        nums = message.split("+")
-        reply = str(int(nums[0]) + int(nums[1]))
-
-    elif "what can you do" in message:
-        reply = "I can chat, tell jokes, show time and solve simple math."
-
+    elif "weather" in message:
+        reply = "I can't check live weather yet."
+    elif "help" in message:
+        reply = "I can answer basic questions and chat with you."
     else:
-        reply = "I don't know that yet, but Ahmed can teach me! 🚀"
+        reply = "That's interesting. Tell me more."
 
     return jsonify({"reply": reply})
 
