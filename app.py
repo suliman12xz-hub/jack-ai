@@ -4,4 +4,4 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "VERSION 2 WERKT"
+    return "FLASK WERKT NU"
