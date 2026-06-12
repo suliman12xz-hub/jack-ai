@@ -4,58 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jack AI</title>
-  <style>
-    body { margin:0; min-height:100vh; background:#05060a; color:white; font-family:Arial,sans-serif; display:flex; flex-direction:column; }
-    .top { padding:20px; text-align:center; font-size:24px; font-weight:bold; }
-    .center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:90px; text-align:center; }
-    .star { font-size:42px; margin-bottom:25px; }
-    .headline { font-size:36px; font-weight:bold; }
-    .bottom { padding:16px 16px 28px; }
-    .input-bar { max-width:700px; margin:auto; background:#1f2228; border-radius:32px; padding:10px; display:flex; align-items:center; }
-    #msg { flex:1; background:transparent; border:none; outline:none; color:white; font-size:18px; padding:12px; }
-    button { border:none; border-radius:50%; width:48px; height:48px; background:#233a9f; color:white; font-size:22px; }
-    #response { max-width:700px; margin:20px auto; color:#ddd; }
-
-.typing {
-  display: inline-block;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
-}
-  </style>
 </head>
 <body>
-  <div class="top">Jack <span style="opacity:.5">AI</span></div>
-
-  <div class="center" id="welcome">
-    <div class="star">✨</div>
-    <div class="headline">Hi Ahmed,<br>what’s on your mind?</div>
-  </div>
-
-  <div id="response"></div>
-
-  <div class="bottom">
-    <div class="input-bar">
-      <input id="msg" placeholder="Ask Jack">
-      <button onclick="send()">➤</button>
-    </div>
-  </div>
+  <h1>Jack AI</h1>
+  <input id="msg" placeholder="Ask Jack">
+  <button onclick="send()">Send</button>
+  <p id="response"></p>
 
   <script>
     async function send() {
       const input = document.getElementById("msg");
       const message = input.value;
       if (!message.trim()) return;
-
-      document.getElementById("welcome").style.display = "none";
-
-      const responseBox = document.getElementById("response");
-      responseBox.innerHTML += "<b>You:</b> " + message + "<br>";
-responseBox.innerHTML += '<b>Jack:</b> <span class="typing">● ● ●</span><br>';
 
       const res = await fetch("/chat", {
         method: "POST",
@@ -64,15 +24,11 @@ responseBox.innerHTML += '<b>Jack:</b> <span class="typing">● ● ●</span><b
       });
 
       const data = await res.json();
-      responseBox.innerHTML = responseBox.innerHTML.replace('<b>Jack:</b> <span class="typing">● ● ●</span><br>', '<b>Jack:</b> ' + data.reply + '<br><br>');
+      document.getElementById("response").innerText = data.reply;
 
       input.value = "";
       input.focus();
     }
-
-    document.getElementById("msg").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") send();
-    });
   </script>
 </body>
 </html>
