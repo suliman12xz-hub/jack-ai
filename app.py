@@ -4,19 +4,41 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return jsonify({"message": "Jack AI is running!"})
+    return """
+    <h1>Jack AI 🤖</h1>
+
+    <input id="msg" placeholder="Type here..." />
+    <button onclick="send()">Send</button>
+
+    <p id="reply"></p>
+
+    <script>
+    async function send() {
+        let message = document.getElementById("msg").value;
+
+        let res = await fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: message})
+        });
+
+        let data = await res.json();
+        document.getElementById("reply").innerText = data.reply;
+    }
+    </script>
+    """
 
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_message = data.get("message", "")
+    message = data.get("message", "")
 
-    if "hello" in user_message.lower():
+    if "hello" in message.lower():
         reply = "Hello! I'm Jack AI 🤖"
-    elif "name" in user_message.lower():
+    elif "name" in message.lower():
         reply = "My name is Jack AI"
     else:
-        reply = f"You said: {user_message}"
+        reply = "You said: " + message
 
     return jsonify({"reply": reply})
 
