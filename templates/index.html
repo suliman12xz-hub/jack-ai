@@ -86,7 +86,19 @@ font-size:24px;
 cursor:pointer;
 }
 
+
+@keyframes pulse{
+0%{opacity:.3;}
+50%{opacity:1;}
+100%{opacity:.3;}
+}
+
+.thinking{
+animation:pulse 1s infinite;
+}
+
 .welcome{
+
 text-align:center;
 margin-top:150px;
 font-size:42px;
@@ -132,9 +144,7 @@ chat.innerHTML += `
 `;
 
 chat.innerHTML += `
-<div class="bot" id="thinking">
-Jack is thinking...
-</div>
+<div class="bot thinking" id="thinking">Jack is thinking...</div>
 `;
 
 chat.scrollTop=chat.scrollHeight;
