@@ -1,223 +1,37 @@
-cat > templates/index.html <<'EOF'
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jack AI</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at bottom, #111b3a 0%, #05060a 45%, #000 100%);
-      color: white;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .top {
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px;
-    }
-
-    .menu, .edit {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .title {
-      font-size: 25px;
-      font-weight: 700;
-    }
-
-    .title span {
-      opacity: 0.45;
-    }
-
-    .center {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      animation: fadeIn 1s ease;
-    }
-
-    .star {
-      font-size: 42px;
-      margin-bottom: 30px;
-      animation: pulse 2s infinite;
-    }
-
-    .headline {
-      font-size: 36px;
-      line-height: 1.15;
-      font-weight: 700;
-      max-width: 380px;
-      color: #f1f1f1;
-    }
-
-    .bottom {
-      padding: 16px;
-      padding-bottom: 28px;
-    }
-
-    .input-bar {
-      width: 100%;
-      max-width: 720px;
-      margin: 0 auto;
-      background: #1f2228;
-      border-radius: 32px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 0 30px rgba(0,0,0,0.35);
-    }
-
-    .plus {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: transparent;
-      color: white;
-      font-size: 36px;
-      cursor: pointer;
-    }
-
-    #msg {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      font-size: 18px;
-      padding: 0 12px;
-    }
-
-    #msg::placeholder {
-      color: #9da0a8;
-    }
-
-    .mic {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: none;
-      background: #233a9f;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    #response {
-      max-width: 720px;
-      margin: 20px auto 0;
-      color: #d8d8d8;
-      font-size: 16px;
-      line-height: 1.5;
-      padding: 0 8px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.12); opacity: 0.75; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @media (max-width: 600px) {
-      .headline {
-        font-size: 34px;
-      }
-
-      .title {
-        font-size: 23px;
-      }
-
-      .top {
-        height: 80px;
-      }
-    }
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px 'Zapf Dingbats'; color: #ffffff; -webkit-text-stroke: #ffffff}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 42.0px '.Apple Color Emoji UI'; color: #ffffff; -webkit-text-stroke: #ffffff}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 36.0px 'Helvetica Neue'; color: #ededed; -webkit-text-stroke: #ededed}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 36.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 21.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 24.0px '.Apple Color Emoji UI'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #1a268d}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px 'Helvetica Neue'; color: #cfcfcf; -webkit-text-stroke: #cfcfcf; min-height: 18.0px}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 24.0px 'Apple Symbols'; font-kerning: none; background-color: rgba(255, 255, 255, 0.078)}
+    span.s3 {font-kerning: none; background-color: rgba(255, 255, 255, 0.078)}
+    span.s4 {font-kerning: none; background-color: #181a1e}
   </style>
 </head>
-
 <body>
-
-  <div class="top">
-    <div class="menu">☰</div>
-    <div class="title">Jack <span>AI</span></div>
-    <div class="edit">✎</div>
-  </div>
-
-  <div class="center">
-    <div class="star">✨</div>
-    <div class="headline">Hi Ahmed,<br>what’s on your mind?</div>
-  </div>
-
-  <div class="bottom">
-    <div class="input-bar">
-      <button class="plus">+</button>
-      <input id="msg" placeholder="Ask Jack">
-      <button class="mic" onclick="send()">🎙️</button>
-    </div>
-    <div id="response"></div>
-  </div>
-
-  <script>
-    async function send() {
-      const input = document.getElementById("msg");
-      const message = input.value;
-
-      if (!message.trim()) return;
-
-      const responseBox = document.getElementById("response");
-      responseBox.innerHTML = "<b>You:</b> " + message + "<br><b>Jack:</b> thinking...";
-
-      const res = await fetch("/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: message })
-      });
-
-      const data = await res.json();
-
-      responseBox.innerHTML =
-        "<b>You:</b> " + message +
-        "<br><b>Jack:</b> " + data.reply;
-
-      input.value = "";
-      input.focus();
-    }
-
-    document.getElementById("msg").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        send();
-      }
-    });
-  </script>
-
+<p class="p1"><span class="s1">cat &gt; templates/index.html &lt;&lt;'EOF' </span><span class="s2">☰</span></p>
+<p class="p2"><span class="s1"><b>Jack AI</b></span></p>
+<p class="p3"><span class="s3">✎</span></p>
+<p class="p4"><span class="s1">✨</span></p>
+<p class="p5"><span class="s1"><b>Hi Ahmed,</b></span></p>
+<p class="p5"><span class="s1"><b>&lt;div class="headline"&gt;Jack AI&lt;/div&gt;</b></span></p>
+<p class="p6"><span class="s4">+</span></p>
+<p class="p7"><span class="s1"></span><br></p>
+<p class="p8"><span class="s1">🎙️</span></p>
+<p class="p9"><span class="s1"></span><br></p>
 </body>
 </html>
