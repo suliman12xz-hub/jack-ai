@@ -1,18 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Jack AI is running!"
+    return render_template("index.html")
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.get_json()
+    data = request.json
     message = data.get("message", "")
 
     if "how are you" in message.lower():
-        reply = "I'm good!"
+        reply = "I'm good! How can I help you?"
     else:
         reply = "I didn't understand that."
 
