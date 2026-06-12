@@ -1,157 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none}
-  </style>
+  <title>Jack AI Chat</title>
 </head>
 <body>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p2"><span class="s1">&lt;html&gt;</span></p>
-<p class="p2"><span class="s1">&lt;head&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;Jack AI Chat&lt;/title&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>body {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>font-family: Arial;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #0b141a;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>margin: 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>justify-content: center;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>align-items: center;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>height: 100vh;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.chat-container {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>width: 360px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>height: 600px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #111b21;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>flex-direction: column;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>overflow: hidden;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>box-shadow: 0 0 20px rgba(0,0,0,0.5);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.header {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #202c33;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 15px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>color: white;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>font-weight: bold;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.messages {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>flex: 1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>overflow-y: auto;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.msg {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>max-width: 70%;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>margin: 5px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>color: white;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>font-size: 14px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.user {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #005c4b;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>margin-left: auto;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>text-align: right;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.bot {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #202c33;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>margin-right: auto;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>.input-area {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #202c33;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>input {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>flex: 1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border: none;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 5px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>outline: none;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>button {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>margin-left: 10px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>padding: 10px 15px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>background: #00a884;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border: none;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>color: white;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 5px;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>cursor: pointer;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
-<p class="p2"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;div class="chat-container"&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="header"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>🤖 Jack AI</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="messages" id="chat"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="input-area"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;input id="msg" placeholder="Type a message..."&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="send()"&gt;Send&lt;/button&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;script&gt;</span></p>
-<p class="p2"><span class="s1">async function send() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let input = document.getElementById("msg");</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let message = input.value;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>if (!message) return;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>addMessage(message, "user");</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let res = await fetch("/chat", {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>method: "POST",</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>headers: {"Content-Type":"application/json"},</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>body: JSON.stringify({message})</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let data = await res.json();</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>addMessage(data.reply, "bot");</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>input.value = "";</span></p>
-<p class="p2"><span class="s1">}</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">function addMessage(text, type) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let div = document.createElement("div");</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>div.classList.add("msg");</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>div.classList.add(type);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>div.innerText = text;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let chat = document.getElementById("chat");</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>chat.appendChild(div);</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>chat.scrollTop = chat.scrollHeight;</span></p>
-<p class="p2"><span class="s1">}</span></p>
-<p class="p2"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p2"><span class="s1">&lt;/html&gt;</span></p>
+  <h2>Jack AI 💬</h2>
+
+  <input id="msg" placeholder="Type message">
+  <button onclick="send()">Send</button>
+
+  <p id="response"></p>
+
+  <script>
+  async function send() {
+    let message = document.getElementById("msg").value;
+
+    let res = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: message })
+    });
+
+    let data = await res.json();
+    document.getElementById("response").innerText = data.reply;
+  }
+  </script>
 </body>
 </html>
