@@ -26,6 +26,17 @@
   50% { opacity: 1; }
   100% { opacity: 0.2; }
 }
+
+.typing {
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
   </style>
 </head>
 <body>
@@ -55,6 +66,7 @@
 
       const responseBox = document.getElementById("response");
       responseBox.innerHTML += "<b>You:</b> " + message + "<br>";
+responseBox.innerHTML += '<b>Jack:</b> <span class="typing">● ● ●</span><br>';
 responseBox.innerHTML += '<b>Jack:</b> <span class="typing">● ● ●</span><br>';
 
       const res = await fetch("/chat", {
