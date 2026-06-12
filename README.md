@@ -1,2 +1,5 @@
-# jack-ai
-my ai name is jack 
+
+flask
+gunicorn
+requests
+ollama
