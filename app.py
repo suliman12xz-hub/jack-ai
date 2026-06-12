@@ -7,7 +7,7 @@ def home():
     return """
     <h1>Jack AI 🤖</h1>
 
-    <input id="msg" placeholder="Type..." />
+    <input id="msg" placeholder="Type something..." />
     <button onclick="send()">Send</button>
 
     <p id="reply"></p>
@@ -30,10 +30,14 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.get_json()
-    message = data.get("message", "")
+    try:
+        data = request.get_json()
+        message = data.get("message", "")
 
-    return jsonify({"reply": "Jack AI: " + message})
+        return jsonify({"reply": "Jack AI: " + message})
+
+    except Exception as e:
+        return jsonify({"reply": "Error: " + str(e)})
 
 if __name__ == "__main__":
     app.run()
