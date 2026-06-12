@@ -8,14 +8,17 @@ def chat():
     data = request.json
     message = data.get("message", "")
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are Jack AI, a helpful assistant."},
-            {"role": "user", "content": message}
-        ]
-    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are Jack AI."},
+                {"role": "user", "content": message}
+            ]
+        )
 
-    reply = response.choices[0].message.content
+        reply = response.choices[0].message.content
+        return jsonify({"reply": reply})
 
-    return jsonify({"reply": reply})
+    except Exception as e:
+        return jsonify({"reply": str(e)})
