@@ -41,6 +41,34 @@ def chat():
     elif "what can you do" in message:
         reply = "I can chat, tell jokes, show time and solve simple math."
 
+    elif "+" in message:
+        try:
+            a,b = message.split("+")
+            reply = str(float(a) + float(b))
+        except:
+            reply = "Math error"
+
+    elif "-" in message:
+        try:
+            a,b = message.split("-")
+            reply = str(float(a) - float(b))
+        except:
+            reply = "Math error"
+
+    elif "*" in message:
+        try:
+            a,b = message.split("*")
+            reply = str(float(a) * float(b))
+        except:
+            reply = "Math error"
+
+    elif "/" in message:
+        try:
+            a,b = message.split("/")
+            reply = str(float(a) / float(b))
+        except:
+            reply = "Math error"
+
     else:
         reply = "I don't know that yet, but Mo can teach me! 🚀"
 
