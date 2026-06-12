@@ -10,4 +10,4 @@ def home():
 def chat():
     data = request.json
     message = data.get("message", "")
-    return jsonify({"reply": "Je zei: " + message})
+    return jsonify({"reply": message})
