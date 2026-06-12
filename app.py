@@ -1,35 +1,15 @@
-from flask import Flask, request, jsonify, render_template
-from openai import OpenAI
-import os
-
-app = Flask(__name__)
-
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY")
-)
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
-    message = data.get("message", "")
+    message = data.get("message", "").lower()
 
-    try:
-        response = client.responses.create(
-            model="gpt-5-mini",
-            input=f"You are Jack AI, a helpful assistant. User says: {message}"
-        )
-
-        reply = response.output_text
-
-    except Exception as e:
-        reply = f"Error: {str(e)}"
+    if "hello" in message or "hallo" in message:
+        reply = "Hello! I'm Jack AI 🤖"
+    elif "how are you" in message:
+        reply = "I'm good! How can I help you?"
+    elif "who are you" in message:
+        reply = "I'm Jack AI, your assistant."
+    else:
+        reply = "I don't know yet, but I'm learning."
 
     return jsonify({"reply": reply})
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
