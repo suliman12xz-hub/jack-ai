@@ -25,8 +25,8 @@ def chat():
     elif "who made you" in message:
         reply = "I was created by Mo 😎"
 
-    elif "joke" in message:
-        reply = "Why don't programmers like nature? It has too many bugs! 😂"
+    elif "your name" in message:
+        reply = "My name is Jack AI."
 
     elif "time" in message:
         reply = "Current time: " + datetime.now().strftime("%H:%M")
@@ -34,38 +34,49 @@ def chat():
     elif "date" in message:
         reply = datetime.now().strftime("%d/%m/%Y")
 
-    elif message.replace("+","").isdigit() and "+" in message:
-        nums = message.split("+")
-        reply = str(int(nums[0]) + int(nums[1]))
+    elif "ufc" in message:
+        reply = "UFC is the world's biggest MMA organization 🥊"
 
-    elif "what can you do" in message:
-        reply = "I can chat, tell jokes, show time and solve simple math."
+    elif "charles oliveira" in message:
+        reply = "Charles Oliveira is known for his submissions and exciting fighting style 🐍"
+
+    elif "islam makhachev" in message:
+        reply = "Islam Makhachev is one of the best lightweight fighters in the world."
+
+    elif "tell me about mo" in message:
+        reply = "Mo is my creator and future tech entrepreneur 🚀"
+
+    elif "favorite fighter" in message:
+        reply = "I like Charles Oliveira and Shara Bullet 😎"
+
+    elif "joke" in message:
+        reply = "Why don't programmers like nature? It has too many bugs! 😂"
 
     elif "+" in message:
         try:
-            a,b = message.split("+")
+            a, b = message.split("+")
             reply = str(float(a) + float(b))
-        except:
-            reply = "Math error"
-
-    elif "-" in message:
-        try:
-            a,b = message.split("-")
-            reply = str(float(a) - float(b))
         except:
             reply = "Math error"
 
     elif "*" in message:
         try:
-            a,b = message.split("*")
+            a, b = message.split("*")
             reply = str(float(a) * float(b))
         except:
             reply = "Math error"
 
     elif "/" in message:
         try:
-            a,b = message.split("/")
+            a, b = message.split("/")
             reply = str(float(a) / float(b))
+        except:
+            reply = "Math error"
+
+    elif "-" in message:
+        try:
+            a, b = message.split("-")
+            reply = str(float(a) - float(b))
         except:
             reply = "Math error"
 
