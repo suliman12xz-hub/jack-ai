@@ -5,11 +5,11 @@ def chat():
 
     if "hello" in message or "hallo" in message:
         reply = "Hello! I'm Jack AI 🤖"
-    elif "how are you" in message:
-        reply = "I'm good! How can I help you?"
     elif "who are you" in message:
         reply = "I'm Jack AI, your assistant."
+    elif "how are you" in message:
+        reply = "I'm doing great!"
     else:
-        reply = "I don't know yet, but I'm learning."
+        reply = f"You said: {message}"
 
     return jsonify({"reply": reply})
