@@ -9,7 +9,4 @@ def home():
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
-    return jsonify({"reply": "OK: " + data.get("message", "")})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    return jsonify({"reply": data.get("message", "")})
