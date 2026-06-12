@@ -42,7 +42,7 @@ def chat():
         reply = "I can chat, tell jokes, show time and solve simple math."
 
     else:
-        reply = "I don't know that yet, but Ahmed can teach me! 🚀"
+        reply = "I don't know that yet, but Mo can teach me! 🚀"
 
     return jsonify({"reply": reply})
 
