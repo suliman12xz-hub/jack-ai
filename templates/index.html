@@ -7,40 +7,43 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2685.4">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
     span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;Jack AI&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Jack AI 💬&lt;/h1&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;input id="msg" placeholder="Type message"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button onclick="send()"&gt;Send&lt;/button&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;p id="response"&gt;&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>async function send() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>let message = document.getElementById("msg").value;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>let res = await fetch("/chat", {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>method: "POST",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>headers: { "Content-Type": "application/json" },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ message })</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>let data = await res.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById("response").innerText = data.reply;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p2"><span class="s1">&lt;html&gt;</span></p>
+<p class="p2"><span class="s1">&lt;head&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;Jack AI&lt;/title&gt;</span></p>
+<p class="p2"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p2"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;h2&gt;Jack AI 💬&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;input id="msg" placeholder="Type message"&gt;</span></p>
+<p class="p2"><span class="s1">&lt;button onclick="send()"&gt;Send&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;p id="response"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;script&gt;</span></p>
+<p class="p2"><span class="s1">async function send() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let message = document.getElementById("msg").value;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let res = await fetch("/chat", {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>method: "POST",</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>headers: { "Content-Type": "application/json" },</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>body: JSON.stringify({ message })</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>let data = await res.json();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById("response").innerText = data.reply;</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p2"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p2"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
