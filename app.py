@@ -7,7 +7,7 @@ def home():
     return """
     <h1>Jack AI 🤖</h1>
 
-    <input id="msg" placeholder="Type something..." />
+    <input id="msg" placeholder="Type..." />
     <button onclick="send()">Send</button>
 
     <p id="reply"></p>
@@ -19,7 +19,7 @@ def home():
         let res = await fetch("/chat", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({message})
+            body: JSON.stringify({message: message})
         });
 
         let data = await res.json();
