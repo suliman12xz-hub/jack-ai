@@ -1,24 +1,22 @@
-from openai import OpenAI
-import os
+from flask import Flask, request, jsonify
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Jack AI is running!"
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.json
+    data = request.get_json()
     message = data.get("message", "")
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are Jack AI."},
-                {"role": "user", "content": message}
-            ]
-        )
+    if "how are you" in message.lower():
+        reply = "I'm good!"
+    else:
+        reply = "I didn't understand that."
 
-        reply = response.choices[0].message.content
-        return jsonify({"reply": reply})
+    return jsonify({"reply": reply})
 
-    except Exception as e:
-        return jsonify({"reply": str(e)})
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
