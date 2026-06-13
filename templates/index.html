@@ -91,9 +91,6 @@ async function send(){
 
   chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
 
-  if(window.voiceMode){
-    speak(data.reply);
-    window.voiceMode = false;
   }
   input.value="";
   window.selectedImage = null;
@@ -102,20 +99,7 @@ async function send(){
 
 function newChat(){
   document.getElementById("chat").innerHTML =
-    '<div id="welcome" class="welcome">How can I help you today?</div>';
-}
-
-function speak(text){
-  const speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-US";
-  speech.rate = 1;
-  speech.pitch = 1;
-
-  const voices = speechSynthesis.getVoices();
-  speech.voice = voices.find(v => v.name === "Karen") || voices[0];
-
-  speechSynthesis.speak(speech);
-}
+    '<div id="welcome" class="welcome">How can I help you today?</div>';}
 
 function startVoice(){
   window.voiceMode = true;
