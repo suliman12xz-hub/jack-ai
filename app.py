@@ -66,6 +66,7 @@ def voice():
     r = requests.post(url, headers=headers, json=payload)
 
     if r.status_code != 200:
+        print("ELEVENLABS ERROR:", r.status_code, r.text)
         return jsonify({"error": r.text}), 500
 
     return Response(r.content, mimetype="audio/mpeg")
