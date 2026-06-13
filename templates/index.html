@@ -83,7 +83,7 @@ async function send(){
   const res=await fetch("/chat",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:message})
+    body:JSON.stringify({message:message, image: window.selectedImage || null})
   });
 
   const data=await res.json();
@@ -91,6 +91,7 @@ async function send(){
 
   chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
   input.value="";
+  window.selectedImage = null;
   chat.scrollTop=chat.scrollHeight;
 }
 
@@ -107,12 +108,20 @@ document.getElementById("msg").addEventListener("keydown",function(e){
   if(e.key==="Enter"){send();}
 });
 
+let selectedImage = null;
+window.selectedImage = null;
 const fileInput = document.getElementById("fileInput");
 const chat = document.getElementById("chat");
 
 fileInput.addEventListener("change", function(){
   const file = fileInput.files[0];
   if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      window.selectedImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
     img.style.maxWidth = "220px";
@@ -138,6 +147,12 @@ chat.addEventListener("drop", function(e){
   const file = e.dataTransfer.files[0];
   if(file && file.type.startsWith("image/")){
     fileInput.files = e.dataTransfer.files;
+
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      window.selectedImage = ev.target.result;
+    };
+    reader.readAsDataURL(file);
 
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
