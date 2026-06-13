@@ -90,8 +90,6 @@ async function send(){
   document.getElementById("thinking").remove();
 
   chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
-
-  }
   input.value="";
   window.selectedImage = null;
   chat.scrollTop=chat.scrollHeight;
@@ -99,10 +97,11 @@ async function send(){
 
 function newChat(){
   document.getElementById("chat").innerHTML =
-    '<div id="welcome" class="welcome">How can I help you today?</div>';}
+    '<div id="welcome" class="welcome">How can I help you today?</div>';
+}
 
 function startVoice(){
-  window.voiceMode = true;
+  alert("Voice later. Chat mode works now.");
 }
 
 document.getElementById("msg").addEventListener("keydown",function(e){
