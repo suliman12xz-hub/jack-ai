@@ -14,12 +14,14 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;height:10
 .input-wrap{padding:20px}
 .input-bar{max-width:800px;margin:auto;background:#1a1a1a;border-radius:35px;display:flex;align-items:center;padding:10px 20px}
 #msg{flex:1;background:none;border:none;outline:none;color:white;font-size:18px;padding:12px}
-.send{background:none;border:none;color:white;font-size:24px;cursor:pointer}
+button{background:none;border:none;color:white;font-size:24px;cursor:pointer;margin-left:10px}
 .welcome{text-align:center;margin-top:150px;font-size:42px;font-weight:600;opacity:.9}
 .thinking{opacity:.6}
+.listening{color:#3b82f6}
 </style>
 </head>
 <body>
+
 <div class="header">✨ Jack AI</div>
 
 <div id="chat">
@@ -28,8 +30,9 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;height:10
 
 <div class="input-wrap">
   <div class="input-bar">
-    <input id="msg" placeholder="Ask Jack">
-    <button class="send" onclick="send()">➜</button>
+    <input id="msg" placeholder="Type or talk to Jack...">
+    <button id="micBtn" onclick="startVoice()">🎤</button>
+    <button onclick="send()">➜</button>
   </div>
 </div>
 
@@ -60,11 +63,62 @@ async function send(){
   chat.innerHTML += `<div class="bot">${data.reply}</div>`;
   input.value="";
   chat.scrollTop=chat.scrollHeight;
+
+  speak(data.reply);
+}
+
+function startVoice(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn = document.getElementById("micBtn");
+
+  if(!SpeechRecognition){
+    alert("Voice chat is not supported in this browser. Try Chrome.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.continuous = false;
+
+  micBtn.innerText = "🔵";
+  micBtn.classList.add("listening");
+
+  recognition.start();
+
+  recognition.onresult = function(event){
+    const text = event.results[0][0].transcript;
+    document.getElementById("msg").value = text;
+    send();
+  };
+
+  recognition.onend = function(){
+    micBtn.innerText = "🎤";
+    micBtn.classList.remove("listening");
+  };
+
+  recognition.onerror = function(){
+    micBtn.innerText = "🎤";
+    micBtn.classList.remove("listening");
+    alert("Mic error. Check microphone permission.");
+  };
+}
+
+function speak(text){
+  window.speechSynthesis.cancel();
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-US";
+  speech.rate = 1;
+  speech.pitch = 1;
+  window.speechSynthesis.speak(speech);
 }
 
 document.getElementById("msg").addEventListener("keydown",function(e){
-  if(e.key==="Enter"){send();}
+  if(e.key==="Enter"){
+    send();
+  }
 });
 </script>
+
 </body>
 </html>
