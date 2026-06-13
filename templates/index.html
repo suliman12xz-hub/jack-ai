@@ -114,12 +114,6 @@ function startVoice(){
 
 function speak(text){
   window.speechSynthesis.cancel();
-  const speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-US";
-  speech.rate = 0.9;
-  speech.pitch = 0.95;
-function speak(text){
-  window.speechSynthesis.cancel();
 
   const speech = new SpeechSynthesisUtterance(text);
   const voices = window.speechSynthesis.getVoices();
