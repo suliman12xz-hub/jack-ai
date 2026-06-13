@@ -4,6 +4,7 @@ import os
 import requests
 
 app = Flask(__name__)
+
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
@@ -17,15 +18,6 @@ def home():
 def chat():
     data = request.json
     message = data.get("message", "")
-    image = data.get("image", None)
-
-    content = [{"type": "text", "text": message}]
-
-    if image:
-        content.append({
-            "type": "image_url",
-            "image_url": {"url": image}
-        })
 
     try:
         response = client.chat.completions.create(
@@ -33,11 +25,11 @@ def chat():
             messages=[
                 {
                     "role": "system",
-                    "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like ChatGPT. You can also analyze images."
+                    "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like a normal person. Keep replies short, helpful, and easy to understand."
                 },
                 {
                     "role": "user",
-                    "content": content
+                    "content": message
                 }
             ]
         )
@@ -64,7 +56,11 @@ def voice():
 
     payload = {
         "text": text,
-        "model_id": "eleven_multilingual_v2"
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.85
+        }
     }
 
     r = requests.post(url, headers=headers, json=payload)
