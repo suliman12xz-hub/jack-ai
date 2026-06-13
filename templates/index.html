@@ -4,35 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jack AI</title>
+
 <style>
-body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;height:100vh;display:flex;flex-direction:column}
-.header{padding:20px 30px;font-size:28px;font-weight:bold}
-#chat{flex:1;overflow-y:auto;padding:40px;max-width:900px;width:100%;margin:auto}
-.user{text-align:right;margin:20px 0}
-.user span{background:#1f1f1f;padding:14px 20px;border-radius:24px;display:inline-block}
-.bot{margin:20px 0;font-size:24px;line-height:1.5}
-.input-wrap{padding:20px}
-.input-bar{max-width:800px;margin:auto;background:#1a1a1a;border-radius:35px;display:flex;align-items:center;padding:10px 20px}
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:Arial,sans-serif;height:100vh;display:flex}
+
+.sidebar{width:260px;background:#070707;border-right:1px solid #222;padding:18px;display:flex;flex-direction:column}
+.logo{font-size:24px;font-weight:700;margin-bottom:25px}
+.newchat{background:#111;border:1px solid #333;color:white;border-radius:12px;padding:12px;text-align:left;cursor:pointer}
+.history{margin-top:20px;color:#aaa;font-size:14px;line-height:2}
+
+.main{flex:1;display:flex;flex-direction:column}
+.chat{flex:1;overflow-y:auto;padding:40px;max-width:900px;width:100%;margin:0 auto}
+.welcome{text-align:center;margin-top:180px;font-size:38px;font-weight:700}
+
+.message{margin:28px 0;line-height:1.6;font-size:18px}
+.user{text-align:right}
+.user span{background:#1f1f1f;padding:14px 20px;border-radius:22px;display:inline-block;max-width:70%;text-align:left}
+.bot{max-width:720px;color:#f1f1f1}
+
+.input-area{padding:20px}
+.input-bar{max-width:760px;margin:auto;background:#1f1f1f;border-radius:32px;display:flex;align-items:center;padding:10px 16px}
 #msg{flex:1;background:none;border:none;outline:none;color:white;font-size:18px;padding:12px}
 button{background:none;border:none;color:white;font-size:24px;cursor:pointer;margin-left:10px}
-.welcome{text-align:center;margin-top:150px;font-size:42px;font-weight:600;opacity:.9}
-.thinking{opacity:.6}
-.listening{color:#3b82f6}
+.small{font-size:12px;color:#777;text-align:center;margin-top:8px}
+
+@media(max-width:800px){
+.sidebar{display:none}
+.chat{padding:24px}
+.welcome{font-size:30px}
+}
 </style>
 </head>
+
 <body>
 
-<div class="header">✨ Jack AI</div>
-
-<div id="chat">
-  <div id="welcome" class="welcome">How can I help you today?</div>
+<div class="sidebar">
+  <div class="logo">✨ Jack AI</div>
+  <button class="newchat" onclick="newChat()">+ New chat</button>
+  <div class="history">
+    <div>Chat 1</div>
+    <div>Chat 2</div>
+    <div>Chat 3</div>
+  </div>
 </div>
 
-<div class="input-wrap">
-  <div class="input-bar">
-    <input id="msg" placeholder="Type or talk to Jack...">
-    <button id="micBtn" onclick="startVoice()">🎤</button>
-    <button onclick="send()">➜</button>
+<div class="main">
+  <div id="chat" class="chat">
+    <div id="welcome" class="welcome">How can I help you today?</div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-bar">
+      <input id="msg" placeholder="Ask anything">
+      <button onclick="startVoice()">🎤</button>
+      <button onclick="send()">➜</button>
+    </div>
+    <div class="small">Jack AI can make mistakes.</div>
   </div>
 </div>
 
@@ -46,8 +74,8 @@ async function send(){
 
   const chat=document.getElementById("chat");
 
-  chat.innerHTML += `<div class="user"><span>${message}</span></div>`;
-  chat.innerHTML += `<div class="bot thinking" id="thinking">Jack is thinking...</div>`;
+  chat.innerHTML += `<div class="message user"><span>${message}</span></div>`;
+  chat.innerHTML += `<div class="message bot" id="thinking">Jack is thinking...</div>`;
   chat.scrollTop=chat.scrollHeight;
 
   const res=await fetch("/chat",{
@@ -57,87 +85,24 @@ async function send(){
   });
 
   const data=await res.json();
-
   document.getElementById("thinking").remove();
 
-  chat.innerHTML += `<div class="bot">${data.reply}</div>`;
+  chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
   input.value="";
   chat.scrollTop=chat.scrollHeight;
-
-  
-if (window.voiceMode === true) {
-  speak(data.reply);
-}
-window.voiceMode = false;
-
 }
 
+function newChat(){
+  document.getElementById("chat").innerHTML =
+    '<div id="welcome" class="welcome">How can I help you today?</div>';
+}
 
 function startVoice(){
-  window.voiceMode = true;
-
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const micBtn = document.getElementById("micBtn");
-
-  if(!SpeechRecognition){
-    alert("Voice chat is not supported in this browser. Try Chrome.");
-    return;
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
-  recognition.continuous = false;
-
-  micBtn.innerText = "🔵";
-  micBtn.classList.add("listening");
-
-  recognition.start();
-
-  recognition.onresult = function(event){
-    const text = event.results[0][0].transcript;
-    document.getElementById("msg").value = text;
-    send();
-  };
-
-  recognition.onend = function(){
-    micBtn.innerText = "🎤";
-    micBtn.classList.remove("listening");
-  };
-
-  recognition.onerror = function(){
-    micBtn.innerText = "🎤";
-    micBtn.classList.remove("listening");
-    alert("Mic error. Check microphone permission.");
-  };
+  alert("Voice later. Chat mode works now.");
 }
 
-async function speak(text){
-  try {
-    const res = await fetch("/voice", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({text: text})
-    });
-
-    if (!res.ok) {
-      console.log("Voice error");
-      return;
-    }
-
-    const blob = await res.blob();
-    const audioUrl = URL.createObjectURL(blob);
-    const audio = new Audio(audioUrl);
-    audio.play();
-  } catch (err) {
-    console.log("Voice failed", err);
-  }
-}
-
-document.getElementById("msg").addEventListener("keydown", function(e){
-  if(e.key === "Enter"){
-    send();
-  }
+document.getElementById("msg").addEventListener("keydown",function(e){
+  if(e.key==="Enter"){send();}
 });
 </script>
 
