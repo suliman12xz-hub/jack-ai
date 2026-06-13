@@ -56,9 +56,7 @@ button{background:none;border:none;color:white;font-size:24px;cursor:pointer;mar
 
   <div class="input-area">
     <div class="input-bar">
-      <input type="file" id="fileInput" accept="image/*" hidden>
-<button onclick="document.getElementById('fileInput').click()">📎</button>
-<input id="msg" placeholder="Ask anything">
+      <input id="msg" placeholder="Ask anything">
       <button onclick="startVoice()">🎤</button>
       <button onclick="send()">➜</button>
     </div>
@@ -105,47 +103,6 @@ function startVoice(){
 
 document.getElementById("msg").addEventListener("keydown",function(e){
   if(e.key==="Enter"){send();}
-});
-
-const fileInput = document.getElementById("fileInput");
-const chat = document.getElementById("chat");
-
-fileInput.addEventListener("change", function(){
-  const file = fileInput.files[0];
-  if(file){
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.style.maxWidth = "220px";
-    img.style.borderRadius = "16px";
-    img.style.margin = "15px 0";
-    chat.appendChild(img);
-  }
-});
-
-chat.addEventListener("dragover", function(e){
-  e.preventDefault();
-  chat.style.border = "2px dashed #555";
-});
-
-chat.addEventListener("dragleave", function(){
-  chat.style.border = "none";
-});
-
-chat.addEventListener("drop", function(e){
-  e.preventDefault();
-  chat.style.border = "none";
-
-  const file = e.dataTransfer.files[0];
-  if(file && file.type.startsWith("image/")){
-    fileInput.files = e.dataTransfer.files;
-
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.style.maxWidth = "220px";
-    img.style.borderRadius = "16px";
-    img.style.margin = "15px 0";
-    chat.appendChild(img);
-  }
 });
 </script>
 
