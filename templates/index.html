@@ -118,15 +118,16 @@ function speak(text){
   speech.lang = "en-US";
   speech.rate = 0.9;
   speech.pitch = 0.95;
+function speak(text){
+  window.speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(text);
+  const voices = window.speechSynthesis.getVoices();
+
+  speech.voice = voices.find(v => v.name.includes("Tara")) || voices[0];
+
+  speech.rate = 0.95;
+  speech.pitch = 1.0;
+
   window.speechSynthesis.speak(speech);
 }
-
-document.getElementById("msg").addEventListener("keydown",function(e){
-  if(e.key==="Enter"){
-    send();
-  }
-});
-</script>
-
-</body>
-</html>
