@@ -1,14 +1,10 @@
-from flask import Flask, request, jsonify, render_template, Response
+from flask import Flask, request, jsonify, render_template
 from openai import OpenAI
 import os
-import requests
 
 app = Flask(__name__)
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
-VOICE_ID = "wBXNqKUATyqu0RtYt25i"
 
 @app.route("/")
 def home():
@@ -40,35 +36,6 @@ def chat():
         reply = "Error: " + str(e)
 
     return jsonify({"reply": reply})
-
-@app.route("/voice", methods=["POST"])
-def voice():
-    data = request.json
-    text = data.get("text", "")
-
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
-
-    headers = {
-        "xi-api-key": ELEVENLABS_API_KEY,
-        "Content-Type": "application/json",
-        "Accept": "audio/mpeg"
-    }
-
-    payload = {
-        "text": text,
-        "model_id": "eleven_multilingual_v2",
-        "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.85
-        }
-    }
-
-    r = requests.post(url, headers=headers, json=payload)
-
-    if r.status_code != 200:
-        return jsonify({"error": r.text}), 500
-
-    return Response(r.content, mimetype="audio/mpeg")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))

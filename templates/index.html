@@ -112,18 +112,26 @@ function startVoice(){
   };
 }
 
-function speak(text){
-  window.speechSynthesis.cancel();
+async function speak(text){
+  try {
+    const res = await fetch("/voice", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({text: text})
+    });
 
-  const speech = new SpeechSynthesisUtterance(text);
-  const voices = window.speechSynthesis.getVoices();
+    if (!res.ok) {
+      console.log("Voice error");
+      return;
+    }
 
-  speech.voice = voices.find(v => v.name.includes("Tara")) || voices[0];
-
-  speech.rate = 0.95;
-  speech.pitch = 1.0;
-
-  window.speechSynthesis.speak(speech);
+    const blob = await res.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+  } catch (err) {
+    console.log("Voice failed", err);
+  }
 }
 
 document.getElementById("msg").addEventListener("keydown", function(e){
