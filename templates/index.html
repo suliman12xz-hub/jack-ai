@@ -64,10 +64,18 @@ async function send(){
   input.value="";
   chat.scrollTop=chat.scrollHeight;
 
+  
+if (window.voiceMode === true) {
   speak(data.reply);
 }
+window.voiceMode = false;
+
+}
+
 
 function startVoice(){
+  window.voiceMode = true;
+
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const micBtn = document.getElementById("micBtn");
 
@@ -108,8 +116,8 @@ function speak(text){
   window.speechSynthesis.cancel();
   const speech = new SpeechSynthesisUtterance(text);
   speech.lang = "en-US";
-  speech.rate = 1;
-  speech.pitch = 1;
+  speech.rate = 0.9;
+  speech.pitch = 0.95;
   window.speechSynthesis.speak(speech);
 }
 
