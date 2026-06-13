@@ -9,6 +9,13 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
 VOICE_ID = "wBXNqKUATyqu0RtYt25i"
 
+conversation = [
+    {
+        "role": "system",
+        "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like ChatGPT. You can analyze images. Keep replies helpful and easy to understand."
+    }
+]
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -27,22 +34,26 @@ def chat():
             "image_url": {"url": image}
         })
 
+    conversation.append({
+        "role": "user",
+        "content": content
+    })
+
     try:
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like ChatGPT. You can also analyze images."
-                },
-                {
-                    "role": "user",
-                    "content": content
-                }
-            ]
+            messages=conversation
         )
 
         reply = response.choices[0].message.content
+
+        conversation.append({
+            "role": "assistant",
+            "content": reply
+        })
+
+        if len(conversation) > 20:
+            del conversation[1:3]
 
     except Exception as e:
         reply = "Error: " + str(e)
