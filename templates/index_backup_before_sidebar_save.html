@@ -42,7 +42,11 @@ button{background:none;border:none;color:white;font-size:24px;cursor:pointer;mar
 <div class="sidebar">
   <div class="logo">✨ Jack AI</div>
   <button class="newchat" onclick="newChat()">+ New chat</button>
-  <div id="history" class="history"></div>
+  <div class="history">
+    <div>Chat 1</div>
+    <div>Chat 2</div>
+    <div>Chat 3</div>
+  </div>
 </div>
 
 <div class="main">
@@ -86,49 +90,15 @@ async function send(){
   document.getElementById("thinking").remove();
 
   chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
-  saveChat();
   input.value="";
   window.selectedImage = null;
   chat.scrollTop=chat.scrollHeight;
 }
 
-let currentChatId = Date.now().toString();
-
-function saveChat(){
-  const chat = document.getElementById("chat").innerHTML;
-  localStorage.setItem("jack_chat_" + currentChatId, chat);
-  loadHistory();
-}
-
-function loadChat(id){
-  currentChatId = id;
-  document.getElementById("chat").innerHTML = localStorage.getItem("jack_chat_" + id);
-}
-
-function loadHistory(){
-  const history = document.getElementById("history");
-  history.innerHTML = "";
-
-  Object.keys(localStorage)
-    .filter(key => key.startsWith("jack_chat_"))
-    .forEach((key, index) => {
-      const id = key.replace("jack_chat_", "");
-      const item = document.createElement("div");
-      item.innerText = "Chat " + (index + 1);
-      item.style.cursor = "pointer";
-      item.onclick = () => loadChat(id);
-      history.appendChild(item);
-    });
-}
-
 function newChat(){
-  currentChatId = Date.now().toString();
   document.getElementById("chat").innerHTML =
     '<div id="welcome" class="welcome">How can I help you today?</div>';
-  saveChat();
 }
-
-loadHistory();
 
 function startVoice(){
   alert("Voice later. Chat mode works now.");
