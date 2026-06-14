@@ -4,437 +4,387 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jack AI</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: #000;
-  overflow: auto;
-}
-
-    * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter', sans-serif; }
-
-    body {
-      height:100vh;
-      background: radial-gradient(circle at center, #101b45 0%, #08090d 45%, #050505 100%);
-      color:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:'Inter', sans-serif;
+      scrollbar-width:none;
     }
 
-    .page {
-      position: relative;
+    *::-webkit-scrollbar{
+      display:none;
+    }
+
+    html, body{
       width:100%;
-      max-width:1000px;
-      height:100vh;
+      min-height:100%;
+      background:#050505;
+      color:white;
+      overflow:auto;
+    }
+
+    body{
+      background:radial-gradient(circle at center,
+      rgba(20,40,120,.35) 0%,
+      rgba(5,10,30,.45) 35%,
+      #050505 75%);
+    }
+
+    .brand{
+      position:fixed;
+      top:38px;
+      left:48px;
+      font-size:30px;
+      font-weight:700;
+      z-index:10;
+    }
+
+    .page{
+      min-height:100vh;
+      width:100%;
       display:flex;
       flex-direction:column;
-      justify-content:center;
       align-items:center;
-      padding:20px;
+      justify-content:center;
+      padding:120px 20px 140px;
     }
 
-    .title {
-      font-size:42px;
-      margin-bottom:45px;
-      color:#e8e8e8;
+    .title{
+      font-size:48px;
+      font-weight:300;
+      letter-spacing:-1px;
+      color:#e9e9ef;
       text-align:center;
-      font-weight:400;
+      margin-bottom:45px;
+      animation:fadeUp .8s ease;
     }
 
-    .input-box {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 700px;
-      z-index: 999;
+    .chat-mode{
+      justify-content:flex-start;
+      align-items:center;
+    }
+
+    .chat-mode .title{
+      display:none;
+    }
+
+    .chat{
+      width:min(92vw,760px);
+      display:flex;
+      flex-direction:column;
+      gap:26px;
+      padding-bottom:120px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .user{
       width:100%;
-      max-width:700px;
-      background:#1f1f1f;
-      border-radius:35px;
-      padding:14px 18px;
+      text-align:right;
+      color:#f5f5f5;
+      font-size:18px;
+      line-height:1.6;
+      white-space:pre-wrap;
+    }
+
+    .bot{
+      width:100%;
+      text-align:left;
+      color:#f5f5f5;
+      font-size:18px;
+      line-height:1.6;
+      white-space:pre-wrap;
+    }
+
+    .typing{
+      color:#aaa;
+      font-size:17px;
+      font-style:italic;
+    }
+
+    .input-box{
+      position:fixed;
+      bottom:26px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(92vw,760px);
+      height:74px;
+      background:#121212;
+      border-radius:999px;
       display:flex;
       align-items:center;
-      gap:15px;
-      box-shadow:0 0 40px rgba(30,60,160,0.25);
+      gap:14px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:
+        0 0 0 1px rgba(120,120,255,.08),
+        0 0 28px rgba(80,70,255,.35),
+        0 0 75px rgba(50,80,255,.25);
+      backdrop-filter:blur(18px);
+      z-index:1000;
+      animation:fadeUp .9s ease;
     }
 
-    .plus, .mic {
-      font-size:26px;
-      color:#ddd;
+    .plusBtn{
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      border:none;
+      background:transparent;
+      color:white;
+      font-size:34px;
+      font-weight:300;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    input {
+    input{
       flex:1;
+      height:100%;
       background:transparent;
       border:none;
       outline:none;
       color:white;
-      font-size:18px;
-    }
-
-    button {
-      border:none;
-      background:#2b6cff;
-      color:white;
-      border-radius:50%;
-      width:42px;
-      height:42px;
       font-size:20px;
+    }
+
+    input::placeholder{
+      color:#aaa;
+    }
+
+    .mic{
+      font-size:26px;
+      opacity:.85;
+    }
+
+    .sendBtn{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      border:none;
+      background:#4f7cff;
+      color:white;
+      font-size:24px;
       cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 0 20px rgba(79,124,255,.35);
     }
 
-    .chat {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 130px;
+    #imageModal{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
       width:100%;
-      max-width:700px;
-      margin-top:35px;
-      font-size:18px;
-      line-height:1.5;
+      height:100%;
+      background:rgba(0,0,0,.95);
+      z-index:9999;
+      justify-content:center;
+      align-items:center;
     }
 
-    .user {
-      text-align:right;
-      margin-bottom:22px;
+    #modalImg{
+      max-width:95%;
+      max-height:95%;
+      border-radius:14px;
     }
 
-    .bot {
-      text-align:left;
-      margin-bottom:22px;
-    }
-
-    .brand {
-      position:absolute;
-      top:25px;
-      left:25px;
-      font-size:28px;
-      font-weight:bold;
-    }
-
-    .chat-mode {
-      justify-content: flex-start;
-    }
-
-    .chat-mode .input-box {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 700px;
-      z-index: 999;
-      position: fixed;
-      bottom: env(safe-area-inset-bottom, 12px);
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 700px;
-      z-index: 999;
-    }
-
-    .chat-mode .chat {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 130px;
-      margin-top: 120px;
-      padding-bottom: 120px;
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(25px);}
+      to{opacity:1; transform:translateY(0);}
     }
 
     @media(max-width:700px){
-      .title { font-size:30px; margin-bottom:35px; }
-      .input-box {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 700px;
-      z-index: 999; max-width:95%; }
-      .chat {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 130px; max-width:95%; }
-      .brand { font-size:22px; }
+      .brand{
+        top:24px;
+        left:24px;
+        font-size:24px;
+      }
+
+      .title{
+        font-size:34px;
+      }
+
+      .input-box{
+        height:66px;
+        bottom:18px;
+      }
+
+      input{
+        font-size:17px;
+      }
+
+      .plusBtn{
+        width:44px;
+        height:44px;
+      }
+
+      .sendBtn{
+        width:46px;
+        height:46px;
+      }
     }
-  
-#imageModal{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.95);
-  z-index:9999;
-  justify-content:center;
-  align-items:center;
-}
-
-#modalImg{
-  max-width:95%;
-  max-height:95%;
-  border-radius:12px;
-}
-
-html, body, .chat {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.chat::-webkit-scrollbar {
-  display: none;
-}
-
-
-.title {
-  animation: fadeInUp 0.8s ease;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.suggestions {
-  display:none !important;
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:22px;
-  animation: fadeUp 0.9s ease;
-}
-
-.suggestion {
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.12);
-  color:white;
-  padding:12px 16px;
-  border-radius:20px;
-  cursor:pointer;
-  backdrop-filter: blur(10px);
-  transition:0.25s;
-}
-
-.suggestion:hover {
-  background:rgba(255,255,255,0.15);
-  transform:translateY(-2px);
-}
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(25px); }
-  to { opacity:1; transform:translateY(0); }
-}
-
-.input-box {
-  animation: fadeUp 0.8s ease;
-}
-
-</style>
-
-
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#000000">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </style>
 </head>
 
 <body>
   <div class="brand">✨ Jack AI</div>
 
-  <div class="page">
-    <h1 class="title">How can I help you today?</h1>
-
-    <div class="input-box">
-      <input type="file" id="imageUpload" accept="image/*" style="display:none"><button type="button" class="plusBtn" onclick="document.getElementById('imageUpload').click()">+</button>
-      <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
-      <span class="mic">🎤</span>
-      <button onclick="send()">➜</button>
-    </div>
+  <div class="page" id="page">
+    <h1 class="title" id="title"></h1>
 
     <div class="chat" id="chat"></div>
+  </div>
 
-<div class="suggestions" id="suggestions">
-  <button class="suggestion" onclick="quickAsk('Help me code')">⚡ Help me code</button>
-  <button class="suggestion" onclick="quickAsk('Give me ideas')">💡 Give me ideas</button>
-  <button class="suggestion" onclick="quickAsk('Summarize this')">📄 Summarize this</button>
-  <button class="suggestion" onclick="quickAsk('Explain this simply')">🎓 Explain this</button>
-</div>
+  <div class="input-box">
+    <input type="file" id="imageUpload" accept="image/*" style="display:none">
+    <button type="button" class="plusBtn" onclick="document.getElementById('imageUpload').click()">+</button>
 
+    <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
+
+    <span class="mic">🎤</span>
+    <button class="sendBtn" onclick="send()">➜</button>
+  </div>
+
+  <div id="imageModal" onclick="this.style.display='none'">
+    <img id="modalImg">
   </div>
 
 <script>
 let selectedImage = null;
-async function send() {
+
+const greetings = [
+  "How can I help you today?",
+  "What's on your mind?",
+  "Ready when you are.",
+  "Let's build something.",
+  "Ask anything.",
+  "What are we working on today?",
+  "Need help with something?",
+  "Let's get started."
+];
+
+const title = document.getElementById("title");
+const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+let i = 0;
+
+function typeWriter(){
+  if(i < greeting.length){
+    title.innerHTML += greeting.charAt(i);
+    i++;
+    setTimeout(typeWriter, 35);
+  }
+}
+typeWriter();
+
+async function send(){
   const input = document.getElementById("msg");
   const chat = document.getElementById("chat");
+  const page = document.getElementById("page");
   const message = input.value.trim();
 
-  if (!message) return;
+  if(!message && !selectedImage) return;
 
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
+  page.classList.add("chat-mode");
+
+  if(message){
+    addMessage(message, "user");
   }
 
-  document.querySelector(".title").style.display = "none";
-document.querySelector(".page").classList.add("chat-mode");
-  const suggestions = document.getElementById("suggestions");
-  if (suggestions) suggestions.style.display = "none";
-
-  addMessage(message, "user");
   input.value = "";
   input.blur();
-  input.focus();
+
+  const typing = document.createElement("div");
+  typing.className = "typing";
+  typing.innerText = "Jack is thinking...";
+  chat.appendChild(typing);
+  scrollDown();
 
   const res = await fetch("/chat", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ message:message, image:selectedImage })
+    body:JSON.stringify({
+      message: message || "What do you see in this image?",
+      image: selectedImage
+    })
   });
 
   const data = await res.json();
+
+  typing.remove();
   addMessage(data.reply, "bot");
+
+  selectedImage = null;
 }
 
-function addMessage(text, type) {
+function addMessage(text, type){
   const chat = document.getElementById("chat");
   const div = document.createElement("div");
   div.className = type;
   div.innerText = text;
   chat.appendChild(div);
-  setTimeout(() => {
-    div.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, 150);
+  scrollDown();
+}
 
+function scrollDown(){
   setTimeout(() => {
-    setTimeout(() => {
+    const chat = document.getElementById("chat");
     chat.scrollTop = chat.scrollHeight;
     window.scrollTo(0, document.body.scrollHeight);
-  }, 150);
-  }, 100);
-  setTimeout(() => {
-    setTimeout(() => {
-    chat.scrollTop = chat.scrollHeight;
-    window.scrollTo(0, document.body.scrollHeight);
-  }, 150);
-  }, 100);
+  }, 120);
 }
 
 function handleEnter(event){
   if(event.key === "Enter") send();
 }
 
-document.getElementById("imageUpload").addEventListener("change", function(event) {
+document.getElementById("imageUpload").addEventListener("change", function(event){
   const file = event.target.files[0];
-  if (!file) return;
+  if(!file) return;
 
   const reader = new FileReader();
 
-  reader.onload = function(e) {
-    const chat = document.getElementById("chat");
-    const img = document.createElement("img");
-
-    img.src = e.target.result;
-
-    img.onclick = function() {
-      document.getElementById("imageModal").style.display = "flex";
-      document.getElementById("modalImg").src = this.src;
-    };
+  reader.onload = function(e){
     selectedImage = e.target.result;
-    img.style.maxWidth = "260px";
-    img.style.borderRadius = "16px";
+
+    const chat = document.getElementById("chat");
+    const page = document.getElementById("page");
+    page.classList.add("chat-mode");
+
+    const img = document.createElement("img");
+    img.src = e.target.result;
+    img.style.maxWidth = "280px";
+    img.style.borderRadius = "18px";
     img.style.display = "block";
     img.style.marginLeft = "auto";
     img.style.marginBottom = "18px";
+    img.style.cursor = "pointer";
+
+    img.onclick = function(){
+      document.getElementById("imageModal").style.display = "flex";
+      document.getElementById("modalImg").src = this.src;
+    };
 
     chat.appendChild(img);
-    setTimeout(() => {
-    setTimeout(() => {
-    chat.scrollTop = chat.scrollHeight;
-    window.scrollTo(0, document.body.scrollHeight);
-  }, 150);
-  }, 100);
+    scrollDown();
   };
 
   reader.readAsDataURL(file);
 });
 
-function quickAsk(text) {
-  const input = document.getElementById("msg");
-  input.value = text;
-  send();
-}
-</script>
-
-<script>
-
-if ("serviceWorker" in navigator) {
+if("serviceWorker" in navigator){
   navigator.serviceWorker.register("/service-worker.js");
-}
-
-function quickAsk(text) {
-  const input = document.getElementById("msg");
-  input.value = text;
-  send();
-}
-</script>
-
-<div id="imageModal" onclick="this.style.display='none'">
-  <img id="modalImg">
-</div>
-
-
-<script>
-const greetings = [
-  "How can I help you today?",
-  "What are we building today?",
-  "Ready to create something amazing?",
-  "What's on your mind?",
-  "How can Jack help you?",
-  "Let's get started 🚀",
-  "Need help with anything?",
-  "Welcome back, Mo 👋"
-];
-
-const title = document.querySelector(".title");
-
-if (title) {
-  const text = greetings[Math.floor(Math.random() * greetings.length)];
-
-  let i = 0;
-  title.innerHTML = "";
-
-  function typeWriter() {
-    if (i < text.length) {
-      title.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeWriter, 35);
-    }
-  }
-
-  typeWriter();
-}
-
-function quickAsk(text) {
-  const input = document.getElementById("msg");
-  input.value = text;
-  send();
 }
 </script>
 </body>
-
 </html>
