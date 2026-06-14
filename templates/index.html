@@ -185,6 +185,7 @@ html, body {
   </div>
 
 <script>
+let selectedImage = null;
 async function send() {
   const input = document.getElementById("msg");
   const chat = document.getElementById("chat");
@@ -206,7 +207,7 @@ document.querySelector(".page").classList.add("chat-mode");
   const res = await fetch("/chat", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ message:message })
+    body:JSON.stringify({ message:message, image:selectedImage })
   });
 
   const data = await res.json();
@@ -252,6 +253,7 @@ document.getElementById("imageUpload").addEventListener("change", function(event
     const img = document.createElement("img");
 
     img.src = e.target.result;
+    selectedImage = e.target.result;
     img.style.maxWidth = "260px";
     img.style.borderRadius = "16px";
     img.style.display = "block";
@@ -272,6 +274,7 @@ document.getElementById("imageUpload").addEventListener("change", function(event
 </script>
 
 <script>
+let selectedImage = null;
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
 }
