@@ -339,8 +339,10 @@ function addMessage(text, type){
 function scrollDown(){
   setTimeout(() => {
     const chat = document.getElementById("chat");
-    chat.scrollTop = chat.scrollHeight;
-    chat.scrollTop = chat.scrollHeight;
+    const last = chat.lastElementChild;
+    if (last) {
+      last.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
   }, 120);
 }
 
