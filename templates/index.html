@@ -13,7 +13,7 @@ html, body {
   overflow: auto;
 }
 
-    * { box-sizing:border-box; margin:0; padding:0; font-family:Arial, sans-serif; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter', sans-serif; }
 
     body {
       height:100vh;
@@ -208,11 +208,48 @@ body::-webkit-scrollbar,
     transform: translateY(0);
   }
 }
+
+.suggestions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:22px;
+  animation: fadeUp 0.9s ease;
+}
+
+.suggestion {
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  color:white;
+  padding:12px 16px;
+  border-radius:20px;
+  cursor:pointer;
+  backdrop-filter: blur(10px);
+  transition:0.25s;
+}
+
+.suggestion:hover {
+  background:rgba(255,255,255,0.15);
+  transform:translateY(-2px);
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(25px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.input-box {
+  animation: fadeUp 0.8s ease;
+}
+
 </style>
 
 
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#000000">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -229,6 +266,14 @@ body::-webkit-scrollbar,
     </div>
 
     <div class="chat" id="chat"></div>
+
+<div class="suggestions" id="suggestions">
+  <button class="suggestion" onclick="quickAsk('Help me code')">⚡ Help me code</button>
+  <button class="suggestion" onclick="quickAsk('Give me ideas')">💡 Give me ideas</button>
+  <button class="suggestion" onclick="quickAsk('Summarize this')">📄 Summarize this</button>
+  <button class="suggestion" onclick="quickAsk('Explain this simply')">🎓 Explain this</button>
+</div>
+
   </div>
 
 <script>
@@ -246,6 +291,9 @@ async function send() {
 
   document.querySelector(".title").style.display = "none";
 document.querySelector(".page").classList.add("chat-mode");
+  const suggestions = document.getElementById("suggestions");
+  if (suggestions) suggestions.style.display = "none";
+
   addMessage(message, "user");
   input.value = "";
   input.blur();
@@ -323,12 +371,24 @@ document.getElementById("imageUpload").addEventListener("change", function(event
 
   reader.readAsDataURL(file);
 });
+
+function quickAsk(text) {
+  const input = document.getElementById("msg");
+  input.value = text;
+  send();
+}
 </script>
 
 <script>
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
+}
+
+function quickAsk(text) {
+  const input = document.getElementById("msg");
+  input.value = text;
+  send();
 }
 </script>
 
@@ -366,6 +426,12 @@ if (title) {
   }
 
   typeWriter();
+}
+
+function quickAsk(text) {
+  const input = document.getElementById("msg");
+  input.value = text;
+  send();
 }
 </script>
 </body>
