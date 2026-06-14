@@ -205,22 +205,8 @@
     }
 
     @media(max-width:700px){
-  .small-options{
-  white-space:nowrap;
-  flex-wrap:nowrap !important; justify-content:center !important;
-  overflow-x:auto;
-  max-width:92vw;
-
-    bottom:130px;
-    width:auto;
-    gap:10px;
-  }
-  .small-option{
-  flex:0 0 auto;
-
-    padding:8px 12px;
-    font-size:13px;
-  }
+  
+  
 
       .brand{
         top:24px;
@@ -252,62 +238,55 @@
       }
     }
   
-.small-options{
-  white-space:nowrap;
-  flex-wrap:nowrap !important; justify-content:center !important;
-  overflow-x:auto;
-  max-width:92vw;
 
-  position:fixed;
-  left:50%;
-  bottom:140px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  z-index:20;
-}
-.small-option{
-  flex:0 0 auto;
 
-  padding:10px 14px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(80,120,255,.25);
-  color:white;
-  font-size:22px;
-  cursor:pointer;
-  box-shadow:0 0 18px rgba(30,80,255,.12);
-}
-.small-option:hover{
-  box-shadow:0 0 28px rgba(60,120,255,.35);
-  transform:translateY(-2px);
-}
+
 
 
 @media(max-width:700px){
-  .small-options{
-  white-space:nowrap;
-  flex-wrap:nowrap !important; justify-content:center !important;
-  overflow-x:auto;
-  max-width:92vw;
+  
+  
+}
 
-    position:fixed !important;
-    bottom:95px !important;
-    left:50% !important;
-    transform:translateX(-50%) !important;
-    width:260px !important;
-    display:flex !important;
-    justify-content:center !important;
-    gap:8px !important;
-    z-index:99 !important;
+
+.small-options{
+  position:fixed;
+  left:50%;
+  bottom:130px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
+  gap:8px;
+  justify-content:center;
+  align-items:center;
+  z-index:99;
+  width:max-content;
+  max-width:95vw;
+}
+.small-option{
+  flex:0 0 auto;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(80,120,255,.35);
+  color:white;
+  font-size:13px;
+  cursor:pointer;
+  box-shadow:0 0 18px rgba(30,80,255,.16);
+  white-space:nowrap;
+}
+.small-option:hover{
+  box-shadow:0 0 28px rgba(60,120,255,.35);
+}
+@media(max-width:700px){
+  .small-options{
+    bottom:125px;
+    gap:6px;
   }
   .small-option{
-  flex:0 0 auto;
-
-    padding:8px 12px !important;
-    font-size:13px !important;
+    padding:7px 9px;
+    font-size:12px;
   }
 }
 
@@ -326,10 +305,10 @@
 
   
 <div class="small-options">
-  <div class="small-option" onclick="setPrompt('Search for ')">🔍</div>
-  <div class="small-option" onclick="document.getElementById('imageUpload').click()">📁</div>
-  <div class="small-option" onclick="setPrompt('Create an image of ')">🎨</div>
-  <div class="small-option" onclick="setPrompt('Remember that ')">🧠</div>
+  <div class="small-option" onclick="setPrompt('Search for ')">🌐 Search</div>
+  <div class="small-option" onclick="document.getElementById('imageUpload').click()">📁 Upload</div>
+  <div class="small-option" onclick="setPrompt('Create an image of ')">🎨 Image</div>
+  <div class="small-option" onclick="setPrompt('Remember that ')">🧠 Memory</div>
 </div>
 
 <div class="input-box">
