@@ -112,11 +112,12 @@ html, body {
 
     .chat-mode .input-box {
       position: fixed;
-      bottom: 25px;
+      bottom: env(safe-area-inset-bottom, 12px);
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
       max-width: 700px;
+      z-index: 999;
     }
 
     .chat-mode .chat {
@@ -181,10 +182,16 @@ function addMessage(text, type) {
   chat.appendChild(div);
 
   setTimeout(() => {
+    setTimeout(() => {
     chat.scrollTop = chat.scrollHeight;
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 150);
   }, 100);
   setTimeout(() => {
+    setTimeout(() => {
     chat.scrollTop = chat.scrollHeight;
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 150);
   }, 100);
 }
 
@@ -211,7 +218,10 @@ document.getElementById("imageUpload").addEventListener("change", function(event
 
     chat.appendChild(img);
     setTimeout(() => {
+    setTimeout(() => {
     chat.scrollTop = chat.scrollHeight;
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 150);
   }, 100);
   };
 
