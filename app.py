@@ -174,6 +174,15 @@ def admin():
     c.execute("SELECT COUNT(*) FROM messages WHERE DATE(created_at)=DATE('now')")
     messages_today = c.fetchone()[0]
 
+    c.execute("SELECT COUNT(*) FROM messages")
+    total_messages = c.fetchone()[0]
+
+    c.execute("SELECT COUNT(*) FROM messages WHERE role='user'")
+    total_user_messages = c.fetchone()[0]
+
+    c.execute("SELECT COUNT(*) FROM messages WHERE DATE(created_at)=DATE('now')")
+    messages_today = c.fetchone()[0]
+
     c.execute("SELECT role, content, created_at FROM messages ORDER BY id DESC LIMIT 50")
     rows = c.fetchall()
     conn.close()
