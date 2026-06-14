@@ -132,7 +132,7 @@
     <h1 class="title">How can I help you today?</h1>
 
     <div class="input-box">
-      <span class="plus">+</span>
+      <input type="file" id="imageUpload" accept="image/*" style="display:none"><button type="button" class="plusBtn" onclick="document.getElementById('imageUpload').click()">+</button>
       <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
       <span class="mic">🎤</span>
       <button onclick="send()">➜</button>
@@ -177,6 +177,30 @@ function addMessage(text, type) {
 function handleEnter(event){
   if(event.key === "Enter") send();
 }
+
+document.getElementById("imageUpload").addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const chat = document.getElementById("chat");
+    const img = document.createElement("img");
+
+    img.src = e.target.result;
+    img.style.maxWidth = "260px";
+    img.style.borderRadius = "16px";
+    img.style.display = "block";
+    img.style.marginLeft = "auto";
+    img.style.marginBottom = "18px";
+
+    chat.appendChild(img);
+    chat.scrollTop = chat.scrollHeight;
+  };
+
+  reader.readAsDataURL(file);
+});
 </script>
 </body>
 </html>
