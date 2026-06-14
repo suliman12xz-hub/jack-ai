@@ -155,6 +155,7 @@ def memory():
     return jsonify({"memory": get_memory_text()})
 
 
+
 @app.route("/admin")
 def admin():
     key = request.args.get("key", "")
@@ -165,14 +166,6 @@ def admin():
 
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM messages")
-    total_messages = c.fetchone()[0]
-
-    c.execute("SELECT COUNT(*) FROM messages WHERE role='user'")
-    total_user_messages = c.fetchone()[0]
-
-    c.execute("SELECT COUNT(*) FROM messages WHERE DATE(created_at)=DATE('now')")
-    messages_today = c.fetchone()[0]
 
     c.execute("SELECT COUNT(*) FROM messages")
     total_messages = c.fetchone()[0]
@@ -188,33 +181,34 @@ def admin():
     conn.close()
 
     html = f"""
-    <html>
-    <head>
-      <title>Jack Admin</title>
-      <style>
-        body { background:#050505; color:white; font-family:Arial; padding:30px; }
-        h1 { color:#7aa2ff; }
-        .msg { background:#111; padding:15px; margin:12px 0; border-radius:12px; }
-        .role { color:#aaa; font-size:13px; }
-        .time { color:#777; font-size:12px; }
-      </style>
-    </head>
-    <body>
-      <h1>📊 Jack Admin</h1>
-      <div class="msg">💬 Total messages: {total_messages}</div>
-      <div class="msg">👤 User messages: {total_user_messages}</div>
-      <div class="msg">📅 Messages today: {messages_today}</div>
-      <p>Last 50 messages</p>
-    """
+<html>
+<head>
+<title>Jack Admin</title>
+<style>
+body {{ background:#050505; color:white; font-family:Arial; padding:30px; }}
+h1 {{ color:#7aa2ff; }}
+.msg {{ background:#111; padding:15px; margin:12px 0; border-radius:12px; }}
+.role {{ color:#aaa; font-size:13px; }}
+.time {{ color:#777; font-size:12px; }}
+</style>
+</head>
+<body>
+<h1>📊 Jack Admin</h1>
+<div class="msg">💬 Total messages: {total_messages}</div>
+<div class="msg">👤 User messages: {total_user_messages}</div>
+<div class="msg">📅 Messages today: {messages_today}</div>
+<p>Last 50 messages</p>
+"""
 
     for role, content, created_at in rows:
+        safe_content = str(content).replace("<", "&lt;").replace(">", "&gt;")
         html += f"""
-        <div class='msg'>
-          <div class='role'>{role}</div>
-          <div>{content}</div>
-          <div class='time'>{created_at}</div>
-        </div>
-        """
+<div class='msg'>
+  <div class='role'>{role}</div>
+  <div>{safe_content}</div>
+  <div class='time'>{created_at}</div>
+</div>
+"""
 
     html += "</body></html>"
     return html
