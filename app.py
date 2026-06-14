@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, Response
 from openai import OpenAI
 import os
 import requests
+import sqlite3
 
 app = Flask(__name__)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -9,12 +10,89 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
 VOICE_ID = "wBXNqKUATyqu0RtYt25i"
 
-conversation = [
-    {
-        "role": "system",
-        "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like ChatGPT. You can analyze images. Keep replies helpful and easy to understand."
-    }
-]
+DB_NAME = "jack_memory.db"
+
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": "You are Jack AI, a friendly assistant created by Mo. Chat naturally like ChatGPT. You can analyze images. Keep replies helpful and easy to understand. Remember useful things the user tells you."
+}
+
+def init_db():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS memory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            key TEXT NOT NULL,
+            value TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def save_message(role, content):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("INSERT INTO messages (role, content) VALUES (?, ?)", (role, content))
+    conn.commit()
+    conn.close()
+
+def get_recent_messages(limit=12):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("SELECT role, content FROM messages ORDER BY id DESC LIMIT ?", (limit,))
+    rows = c.fetchall()
+    conn.close()
+
+    rows.reverse()
+    return [{"role": role, "content": content} for role, content in rows]
+
+def get_memory_text():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("SELECT key, value FROM memory ORDER BY id DESC LIMIT 20")
+    rows = c.fetchall()
+    conn.close()
+
+    if not rows:
+        return "No saved memory yet."
+
+    return "\\n".join([f"{key}: {value}" for key, value in rows])
+
+def remember_from_message(message):
+    lower = message.lower()
+
+    # Simple memory commands
+    if lower.startswith("remember that "):
+        value = message[len("remember that "):].strip()
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute("INSERT INTO memory (key, value) VALUES (?, ?)", ("note", value))
+        conn.commit()
+        conn.close()
+        return True
+
+    if lower.startswith("my name is "):
+        value = message[len("my name is "):].strip()
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute("INSERT INTO memory (key, value) VALUES (?, ?)", ("name", value))
+        conn.commit()
+        conn.close()
+        return True
+
+    return False
+
+init_db()
 
 @app.route("/")
 def home():
@@ -26,6 +104,23 @@ def chat():
     message = data.get("message", "")
     image = data.get("image", None)
 
+    remember_from_message(message)
+
+    save_message("user", message)
+
+    memory_text = get_memory_text()
+    recent_messages = get_recent_messages()
+
+    messages = [
+        SYSTEM_PROMPT,
+        {
+            "role": "system",
+            "content": "Saved memory about the user:\\n" + memory_text
+        }
+    ]
+
+    messages.extend(recent_messages)
+
     content = [{"type": "text", "text": message}]
 
     if image:
@@ -34,7 +129,7 @@ def chat():
             "image_url": {"url": image}
         })
 
-    conversation.append({
+    messages.append({
         "role": "user",
         "content": content
     })
@@ -42,23 +137,21 @@ def chat():
     try:
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
-            messages=conversation
+            messages=messages
         )
 
         reply = response.choices[0].message.content
 
-        conversation.append({
-            "role": "assistant",
-            "content": reply
-        })
-
-        if len(conversation) > 20:
-            del conversation[1:3]
+        save_message("assistant", reply)
 
     except Exception as e:
         reply = "Error: " + str(e)
 
     return jsonify({"reply": reply})
+
+@app.route("/memory", methods=["GET"])
+def memory():
+    return jsonify({"memory": get_memory_text()})
 
 @app.route("/voice", methods=["POST"])
 def voice():
