@@ -180,14 +180,12 @@ function addMessage(text, type) {
   div.innerText = text;
   chat.appendChild(div);
 
-  chat.scrollTo({
-    top: chat.scrollHeight,
-    behavior: "smooth"
-  });
-  chat.scrollTo({
-    top: chat.scrollHeight,
-    behavior: "smooth"
-  });
+  setTimeout(() => {
+    chat.scrollTop = chat.scrollHeight;
+  }, 100);
+  setTimeout(() => {
+    chat.scrollTop = chat.scrollHeight;
+  }, 100);
 }
 
 function handleEnter(event){
@@ -212,10 +210,9 @@ document.getElementById("imageUpload").addEventListener("change", function(event
     img.style.marginBottom = "18px";
 
     chat.appendChild(img);
-    chat.scrollTo({
-    top: chat.scrollHeight,
-    behavior: "smooth"
-  });
+    setTimeout(() => {
+    chat.scrollTop = chat.scrollHeight;
+  }, 100);
   };
 
   reader.readAsDataURL(file);
