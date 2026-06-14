@@ -102,6 +102,7 @@ def home():
 def chat():
     data = request.json
     message = data.get("message", "")
+    print("USER SEARCHED:", message)
     image = data.get("image", None)
 
     remember_from_message(message)
