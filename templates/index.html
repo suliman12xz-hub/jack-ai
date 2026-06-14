@@ -189,6 +189,10 @@ async function send() {
 
   if (!message) return;
 
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+
   document.querySelector(".title").style.display = "none";
 document.querySelector(".page").classList.add("chat-mode");
   addMessage(message, "user");
