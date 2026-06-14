@@ -314,21 +314,6 @@
   100%{transform:scale(1);opacity:.8}
 }
 
-
-.thinking-bar{
-  width:180px;
-  height:4px;
-  border-radius:999px;
-  background:linear-gradient(90deg,#2563eb,#60a5fa,#8b5cf6);
-  box-shadow:0 0 22px rgba(59,130,246,.8);
-  animation:thinkingMove 1.2s infinite alternate;
-  margin:12px 0;
-}
-@keyframes thinkingMove{
-  from{opacity:.35; transform:scaleX(.6);}
-  to{opacity:1; transform:scaleX(1);}
-}
-
 </style>
 <link rel="icon" href="/static/jack-logo.png">
 </head>
@@ -426,19 +411,8 @@ async function send(){
   const data = await res.json();
 
   typing.remove();
-  
-const thinking = document.createElement("div");
-thinking.className = "bot msg";
-thinking.innerHTML = "<div>Jack is thinking...</div><div class='thinking-bar'></div>";
-chat.appendChild(thinking);
-chat.scrollTop = chat.scrollHeight;
-
-setTimeout(async () => {
-  thinking.innerHTML = "";
-  await typeText(thinking, data.reply, 16);
+  addMessage(data.reply, "bot");
   speakJack(data.reply);
-}, 400);
-
 
   selectedImage = null;
 }
@@ -702,24 +676,6 @@ async function voiceLoop(){
       await new Promise(resolve => setTimeout(resolve, 1500));
     }
   }
-}
-
-
-function typeText(element, text, speed=18){
-  return new Promise(resolve => {
-    let i = 0;
-    element.innerHTML = "";
-    function typing(){
-      if(i < text.length){
-        element.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing, speed);
-      }else{
-        resolve();
-      }
-    }
-    typing();
-  });
 }
 
 </script>
