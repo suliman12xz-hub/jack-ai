@@ -253,7 +253,7 @@
     <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
 
     <span class="mic">🎤</span>
-    <button class="sendBtn" onclick="startVoice()">🎤</button>
+    <button class="sendBtn" onclick="startVoiceMode()">🎙️</button>
     <button class="sendBtn" onclick="send()">➜</button>
   </div>
 
@@ -435,6 +435,53 @@ async function speakJack(text){
     audio.play();
   } catch(e){
     console.log("Voice failed", e);
+  }
+}
+
+
+let mediaRecorder;
+let audioChunks = [];
+
+async function startVoiceMode(){
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    setTimeout(() => {
+      mediaRecorder.stop();
+      stream.getTracks().forEach(track => track.stop());
+    }, 5000);
+
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "voice.webm");
+
+      const transRes = await fetch("/transcribe", {
+        method: "POST",
+        body: formData
+      });
+
+      const transData = await transRes.json();
+
+      if(!transData.text){
+        alert("Ik kon je stem niet verstaan.");
+        return;
+      }
+
+      document.getElementById("msg").value = transData.text;
+      await send();
+    };
+
+    mediaRecorder.ondataavailable = event => {
+      audioChunks.push(event.data);
+    };
+
+  } catch(e){
+    alert("Microfoon werkt niet: " + e.message);
   }
 }
 
