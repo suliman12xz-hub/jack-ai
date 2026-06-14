@@ -436,7 +436,7 @@ chat.scrollTop = chat.scrollHeight;
 setTimeout(async () => {
   thinking.innerHTML = "";
   await typeText(thinking, data.reply, 16);
-  speakJack(data.reply);
+  if(voiceReplyEnabled){ speakJack(data.reply); }
 }, 400);
 
 
@@ -610,15 +610,18 @@ function setPrompt(text){
 }
 
 let voiceModeActive = false;
+let voiceReplyEnabled = false;
 
 async function startVoiceMode(){
   voiceModeActive = true;
+  voiceReplyEnabled = true;
   document.getElementById("voiceOverlay").style.display = "flex";
   voiceLoop();
 }
 
 function stopVoiceMode(){
   voiceModeActive = false;
+  voiceReplyEnabled = false;
   document.getElementById("voiceOverlay").style.display = "none";
 }
 
