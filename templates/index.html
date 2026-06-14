@@ -176,7 +176,10 @@ function addMessage(text, type) {
     top: chat.scrollHeight,
     behavior: "smooth"
   });
-  chat.scrollTop = chat.scrollHeight;
+  chat.scrollTo({
+    top: chat.scrollHeight,
+    behavior: "smooth"
+  });
 }
 
 function handleEnter(event){
@@ -201,7 +204,10 @@ document.getElementById("imageUpload").addEventListener("change", function(event
     img.style.marginBottom = "18px";
 
     chat.appendChild(img);
-    chat.scrollTop = chat.scrollHeight;
+    chat.scrollTo({
+    top: chat.scrollHeight,
+    behavior: "smooth"
+  });
   };
 
   reader.readAsDataURL(file);
