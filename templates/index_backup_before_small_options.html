@@ -234,30 +234,7 @@
         height:46px;
       }
     }
-  
-.small-options{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin:0 auto 14px;
-}
-.small-option{
-  padding:9px 15px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(80,120,255,.25);
-  color:white;
-  font-size:14px;
-  cursor:pointer;
-  box-shadow:0 0 18px rgba(30,80,255,.12);
-}
-.small-option:hover{
-  box-shadow:0 0 28px rgba(60,120,255,.35);
-  transform:translateY(-2px);
-}
-
-</style>
+  </style>
 <link rel="icon" href="/static/jack-logo.png">
 </head>
 
@@ -270,15 +247,7 @@
     <div class="chat" id="chat"></div>
   </div>
 
-  
-<div class="small-options">
-  <div class="small-option" onclick="setPrompt('Search for ')">🌐 Search</div>
-  <div class="small-option" onclick="document.getElementById('imageUpload').click()">📁 Upload</div>
-  <div class="small-option" onclick="setPrompt('Create an image of ')">🎨 Image</div>
-  <div class="small-option" onclick="setPrompt('Remember that ')">🧠 Memory</div>
-</div>
-
-<div class="input-box">
+  <div class="input-box">
     <input type="file" id="imageUpload" accept="image/*" style="display:none">
     <button type="button" class="plusBtn" onclick="document.getElementById('imageUpload').click()">+</button>
 
@@ -517,14 +486,6 @@ async function startVoiceMode(){
   }
 }
 
-
-function setPrompt(text){
-  const input = document.getElementById("msg");
-  if(input){
-    input.value = text;
-    input.focus();
-  }
-}
 </script>
 </body>
 </html>
