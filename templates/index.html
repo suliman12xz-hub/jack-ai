@@ -25,6 +25,7 @@ html, body {
     }
 
     .page {
+      position: relative;
       width:100%;
       max-width:1000px;
       height:100vh;
@@ -44,6 +45,13 @@ html, body {
     }
 
     .input-box {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 700px;
+      z-index: 999;
       width:100%;
       max-width:700px;
       background:#1f1f1f;
@@ -81,6 +89,7 @@ html, body {
     }
 
     .chat {
+      padding-bottom: 130px;
       width:100%;
       max-width:700px;
       margin-top:35px;
@@ -112,6 +121,13 @@ html, body {
 
     .chat-mode .input-box {
       position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 700px;
+      z-index: 999;
+      position: fixed;
       bottom: env(safe-area-inset-bottom, 12px);
       left: 50%;
       transform: translateX(-50%);
@@ -121,14 +137,23 @@ html, body {
     }
 
     .chat-mode .chat {
+      padding-bottom: 130px;
       margin-top: 120px;
       padding-bottom: 120px;
     }
 
     @media(max-width:700px){
       .title { font-size:30px; margin-bottom:35px; }
-      .input-box { max-width:95%; }
-      .chat { max-width:95%; }
+      .input-box {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 700px;
+      z-index: 999; max-width:95%; }
+      .chat {
+      padding-bottom: 130px; max-width:95%; }
       .brand { font-size:22px; }
     }
   </style>
