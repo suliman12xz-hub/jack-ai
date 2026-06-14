@@ -171,6 +171,11 @@ function addMessage(text, type) {
   div.className = type;
   div.innerText = text;
   chat.appendChild(div);
+
+  chat.scrollTo({
+    top: chat.scrollHeight,
+    behavior: "smooth"
+  });
   chat.scrollTop = chat.scrollHeight;
 }
 
