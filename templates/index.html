@@ -181,6 +181,18 @@ html, body {
   max-height:95%;
   border-radius:12px;
 }
+
+html, body, .chat {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
 </style>
 
 <link rel="manifest" href="/manifest.json">
