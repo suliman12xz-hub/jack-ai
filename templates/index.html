@@ -340,7 +340,7 @@ function scrollDown(){
   setTimeout(() => {
     const chat = document.getElementById("chat");
     chat.scrollTop = chat.scrollHeight;
-    window.scrollTo(0, document.body.scrollHeight);
+    chat.scrollTop = chat.scrollHeight;
   }, 120);
 }
 
