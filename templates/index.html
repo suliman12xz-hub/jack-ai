@@ -193,7 +193,23 @@ body::-webkit-scrollbar,
   display: none;
 }
 
+
+.title {
+  animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
+
 
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#000000">
@@ -320,5 +336,38 @@ if ("serviceWorker" in navigator) {
   <img id="modalImg">
 </div>
 
+
+<script>
+const greetings = [
+  "How can I help you today?",
+  "What are we building today?",
+  "Ready to create something amazing?",
+  "What's on your mind?",
+  "How can Jack help you?",
+  "Let's get started 🚀",
+  "Need help with anything?",
+  "Welcome back, Mo 👋"
+];
+
+const title = document.querySelector(".title");
+
+if (title) {
+  const text = greetings[Math.floor(Math.random() * greetings.length)];
+
+  let i = 0;
+  title.innerHTML = "";
+
+  function typeWriter() {
+    if (i < text.length) {
+      title.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 35);
+    }
+  }
+
+  typeWriter();
+}
+</script>
 </body>
+
 </html>
