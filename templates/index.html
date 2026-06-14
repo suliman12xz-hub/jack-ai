@@ -415,6 +415,29 @@ async function startVoice(){
   };
 }
 
+
+async function speakJack(text){
+  try{
+    const res = await fetch("/voice", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({text: text})
+    });
+
+    if(!res.ok){
+      console.log("Voice error");
+      return;
+    }
+
+    const blob = await res.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+  } catch(e){
+    console.log("Voice failed", e);
+  }
+}
+
 </script>
 </body>
 </html>
