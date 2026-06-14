@@ -132,6 +132,7 @@ async function send() {
   if (!message) return;
 
   document.querySelector(".title").style.display = "none";
+document.querySelector(".page").style.justifyContent = "flex-start";
   addMessage(message, "user");
   input.value = "";
   input.focus();
