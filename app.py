@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, Response
 from openai import OpenAI
 import os
+from tempfile import NamedTemporaryFile
 import requests
 import sqlite3
 
@@ -370,6 +371,32 @@ body {{
 """
     return html
 
+
+
+
+@app.route("/transcribe", methods=["POST"])
+def transcribe():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio uploaded"}), 400
+
+    audio = request.files["audio"]
+
+    with NamedTemporaryFile(delete=False, suffix=".webm") as temp:
+        audio.save(temp.name)
+        temp_path = temp.name
+
+    try:
+        with open(temp_path, "rb") as audio_file:
+            transcript = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file
+            )
+
+        return jsonify({"text": transcript.text})
+
+    except Exception as e:
+        print("TRANSCRIBE ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/voice", methods=["POST"])
 def voice():
