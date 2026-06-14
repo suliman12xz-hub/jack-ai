@@ -154,6 +154,51 @@ def chat():
 def memory():
     return jsonify({"memory": get_memory_text()})
 
+
+@app.route("/admin")
+def admin():
+    key = request.args.get("key", "")
+    admin_key = os.environ.get("ADMIN_KEY", "1234")
+
+    if key != admin_key:
+        return "Access denied", 403
+
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("SELECT role, content, created_at FROM messages ORDER BY id DESC LIMIT 50")
+    rows = c.fetchall()
+    conn.close()
+
+    html = """
+    <html>
+    <head>
+      <title>Jack Admin</title>
+      <style>
+        body { background:#050505; color:white; font-family:Arial; padding:30px; }
+        h1 { color:#7aa2ff; }
+        .msg { background:#111; padding:15px; margin:12px 0; border-radius:12px; }
+        .role { color:#aaa; font-size:13px; }
+        .time { color:#777; font-size:12px; }
+      </style>
+    </head>
+    <body>
+      <h1>📊 Jack Admin</h1>
+      <p>Last 50 messages</p>
+    """
+
+    for role, content, created_at in rows:
+        html += f"""
+        <div class='msg'>
+          <div class='role'>{role}</div>
+          <div>{content}</div>
+          <div class='time'>{created_at}</div>
+        </div>
+        """
+
+    html += "</body></html>"
+    return html
+
+
 @app.route("/voice", methods=["POST"])
 def voice():
     data = request.json
