@@ -98,6 +98,24 @@
       font-weight:bold;
     }
 
+    .chat-mode {
+      justify-content: flex-start;
+    }
+
+    .chat-mode .input-box {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 700px;
+    }
+
+    .chat-mode .chat {
+      margin-top: 120px;
+      padding-bottom: 120px;
+    }
+
     @media(max-width:700px){
       .title { font-size:30px; margin-bottom:35px; }
       .input-box { max-width:95%; }
@@ -132,7 +150,7 @@ async function send() {
   if (!message) return;
 
   document.querySelector(".title").style.display = "none";
-document.querySelector(".page").style.justifyContent = "flex-start";
+document.querySelector(".page").classList.add("chat-mode");
   addMessage(message, "user");
   input.value = "";
   input.focus();
