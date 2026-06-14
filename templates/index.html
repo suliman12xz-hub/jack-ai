@@ -10,7 +10,7 @@ html, body {
   padding: 0;
   height: 100%;
   background: #000;
-  overflow: hidden;
+  overflow: auto;
 }
 
     * { box-sizing:border-box; margin:0; padding:0; font-family:Arial, sans-serif; }
@@ -89,6 +89,8 @@ html, body {
     }
 
     .chat {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding-bottom: 130px;
       width:100%;
       max-width:700px;
@@ -137,6 +139,8 @@ html, body {
     }
 
     .chat-mode .chat {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding-bottom: 130px;
       margin-top: 120px;
       padding-bottom: 120px;
@@ -153,6 +157,8 @@ html, body {
       max-width: 700px;
       z-index: 999; max-width:95%; }
       .chat {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding-bottom: 130px; max-width:95%; }
       .brand { font-size:22px; }
     }
