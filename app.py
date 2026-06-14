@@ -187,7 +187,7 @@ def admin():
     rows = c.fetchall()
     conn.close()
 
-    html = """
+    html = f"""
     <html>
     <head>
       <title>Jack Admin</title>
