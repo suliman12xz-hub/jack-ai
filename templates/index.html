@@ -330,44 +330,10 @@
 }
 
 
-.sidebar{
-position:fixed;
-left:0;
-top:0;
-width:260px;
-height:100vh;
-background:#0b0b0f;
-border-right:1px solid rgba(255,255,255,.08);
-z-index:100;
-padding:20px;
-}
 
-.sidebar-logo{
-font-size:28px;
-font-weight:700;
-color:white;
-margin-bottom:30px;
-}
-
-.sidebar-item{
-display:flex;
-align-items:center;
-gap:12px;
-padding:12px 14px;
-margin-bottom:8px;
-border-radius:12px;
-cursor:pointer;
-color:#d1d5db;
-transition:.2s;
-}
-
-.sidebar-item:hover{
-background:rgba(255,255,255,.06);
-color:white;
-}
 
 .page{
-margin-left:260px !important;
+
 }
 
 .mobile-menu{
@@ -403,19 +369,7 @@ display:block;
 
 <body>
 
-<div class="mobile-menu" onclick="toggleSidebar()">☰</div>
 
-<div class="sidebar" id="sidebar">
-<div class="sidebar-logo">🤖 Jack</div>
-
-<div class="sidebar-item">➕ New Chat</div>
-<div class="sidebar-item">💬 Chats</div>
-<div class="sidebar-item">🎤 Voice</div>
-<div class="sidebar-item">🧠 Memory</div>
-<div class="sidebar-item">📁 Files</div>
-<div class="sidebar-item">⚙️ Settings</div>
-
-</div>
 
   <div class="brand"><img src="/static/jack-logo.png" style="width:36px;height:36px;border-radius:10px;vertical-align:middle;margin-right:8px;"> Jack AI</div>
 
@@ -809,9 +763,7 @@ function typeText(element, text, speed=18){
 }
 
 
-function toggleSidebar(){
-document.getElementById('sidebar').classList.toggle('open');
-}
+
 
 </script>
 
