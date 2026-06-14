@@ -187,6 +187,7 @@ async function send() {
 document.querySelector(".page").classList.add("chat-mode");
   addMessage(message, "user");
   input.value = "";
+  input.blur();
   input.focus();
 
   const res = await fetch("/chat", {
@@ -205,6 +206,9 @@ function addMessage(text, type) {
   div.className = type;
   div.innerText = text;
   chat.appendChild(div);
+  setTimeout(() => {
+    div.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, 150);
 
   setTimeout(() => {
     setTimeout(() => {
