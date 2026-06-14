@@ -253,6 +253,7 @@
     <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
 
     <span class="mic">🎤</span>
+    <button class="sendBtn" onclick="startVoice()">🎤</button>
     <button class="sendBtn" onclick="send()">➜</button>
   </div>
 
@@ -387,6 +388,33 @@ document.getElementById("imageUpload").addEventListener("change", function(event
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("/service-worker.js");
 }
+
+async function startVoice(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Voice input werkt niet in deze browser. Probeer Safari of Chrome.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "nl-BE";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.start();
+
+  recognition.onresult = function(event){
+    const text = event.results[0][0].transcript;
+    document.getElementById("msg").value = text;
+    send();
+  };
+
+  recognition.onerror = function(event){
+    alert("Microfoon error: " + event.error);
+  };
+}
+
 </script>
 </body>
 </html>
