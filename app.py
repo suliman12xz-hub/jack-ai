@@ -110,7 +110,12 @@ def chat():
     save_message("user", message)
 
     memory_text = get_memory_text()
-    recent_messages = get_recent_messages()
+    recent_messages = [
+    {
+        "role": "system",
+        "content": "You are Jack AI. You were created by Mohammed Faiq, the owner of Jack AI. If anyone asks who made you, who created you, who built you, who owns you, or who your creator is, always answer exactly: I was created by Mohammed Faiq, the owner of Jack AI."
+    }
+] + get_recent_messages()
 
     messages = [
         SYSTEM_PROMPT,
