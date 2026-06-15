@@ -1,376 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jack AI</title>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#000000">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:'Manrope', sans-serif;
-      scrollbar-width:none;
-    }
-
-    *::-webkit-scrollbar{
-      display:none;
-    }
-
-    html, body{
-      width:100%;
-      min-height:100%;
-      background:#050505;
-      color:white;
-      overflow:auto;
-    }
-
-    body{
-      background:radial-gradient(circle at center,
-      rgba(20,40,120,.35) 0%,
-      rgba(5,10,30,.45) 35%,
-      #050505 75%);
-    }
-
-    .brand{
-      position:fixed;
-      top:38px;
-      left:48px;
-      font-size:30px;
-      font-weight:700;
-      z-index:10;
-    }
-
-    .page{
-      min-height:100vh;
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      padding:120px 20px 140px;
-    }
-
-    .title{
-      font-size:48px;
-      font-weight:300;
-      letter-spacing:-1px;
-      color:#e9e9ef;
-      text-align:center;
-      margin-bottom:45px;
-      animation:fadeUp .8s ease;
-    }
-
-    .chat-mode{
-      justify-content:flex-start;
-      align-items:center;
-    }
-
-    .chat-mode .title{
-      display:none;
-    }
-
-    .chat{
-      width:min(92vw,760px);
-      display:flex;
-      flex-direction:column;
-      gap:26px;
-      padding-bottom:120px;
-      overflow-y:auto;
-      -webkit-overflow-scrolling:touch;
-    }
-
-    .user{
-      width:100%;
-      text-align:right;
-      color:#f5f5f5;
-      font-size:18px;
-      line-height:1.6;
-      white-space:pre-wrap;
-    }
-
-    .bot{
-      width:100%;
-      text-align:left;
-      color:#f5f5f5;
-      font-size:18px;
-      line-height:1.6;
-      white-space:pre-wrap;
-    }
-
-    .typing{
-      color:#aaa;
-      font-size:17px;
-      font-style:italic;
-    }
-
-    .input-box{
-      position:fixed;
-      bottom:26px;
-      left:50%;
-      transform:translateX(-50%);
-      width:min(92vw,760px);
-      height:74px;
-      background:#121212;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:10px 12px;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:
-        0 0 0 1px rgba(120,120,255,.08),
-        0 0 28px rgba(80,70,255,.35),
-        0 0 75px rgba(50,80,255,.25);
-      backdrop-filter:blur(18px);
-      z-index:1000;
-      animation:none;
-    }
-
-    .plusBtn{
-      width:50px;
-      height:50px;
-      border-radius:50%;
-      border:none;
-      background:transparent;
-      color:white;
-      font-size:34px;
-      font-weight:300;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    input{
-      flex:1;
-      height:100%;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:white;
-      font-size:20px;
-    }
-
-    input::placeholder{
-      color:#aaa;
-    }
-
-    .mic{
-      font-size:26px;
-      opacity:.85;
-    }
-
-    .sendBtn{
-      width:52px;
-      height:52px;
-      border-radius:50%;
-      border:none;
-      background:#4f7cff;
-      color:white;
-      font-size:24px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 0 20px rgba(79,124,255,.35);
-    }
-
-    #imageModal{
-      display:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,.95);
-      z-index:9999;
-      justify-content:center;
-      align-items:center;
-    }
-
-    #modalImg{
-      max-width:95%;
-      max-height:95%;
-      border-radius:14px;
-    }
-
-    @keyframes fadeUp{
-      from{opacity:0; transform:translateY(25px);}
-      to{opacity:1; transform:translateY(0);}
-    }
-
-    @media(max-width:700px){
-      .brand{
-        top:24px;
-        left:24px;
-        font-size:24px;
-      }
-
-      .title{
-        font-size:34px;
-      }
-
-      .input-box{
-        height:66px;
-        bottom:18px;
-      }
-
-      input{
-        font-size:17px;
-      }
-
-      .plusBtn{
-        width:44px;
-        height:44px;
-      }
-
-      .sendBtn{
-        width:46px;
-        height:46px;
-      }
-    }
-  </style>
-<link rel="icon" href="/static/jack-logo.png">
-</head>
-
-<body>
-  <div class="brand"><img src="/static/jack-logo.png" style="width:36px;height:36px;border-radius:10px;vertical-align:middle;margin-right:8px;"> Jack AI</div>
-
-  <div class="page" id="page">
-    <h1 class="title" id="title"></h1>
-
-    <div class="chat" id="chat"></div>
-  </div>
-
-  <div class="input-box">
-    <input type="file" id="imageUpload" accept="image/*" style="display:none">
-    <button type="button" class="plusBtn" onclick="document.getElementById('imageUpload').click()">+</button>
-
-    <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
-
-    <button class="sendBtn" onclick="startVoiceMode()">🎙️</button>
-    <button class="sendBtn" onclick="send()">➜</button>
-  </div>
-
-  <div id="imageModal" onclick="this.style.display='none'">
-    <img id="modalImg">
-  </div>
-
-<script>
-let selectedImage = null;
-
-const greetings = [
-  "How can I help you today?",
-  "What's on your mind?",
-  "Ready when you are.",
-  "Let's build something.",
-  "Ask anything.",
-  "What are we working on today?",
-  "Need help with something?",
-  "Let's get started."
-];
-
-const title = document.getElementById("title");
-const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-let i = 0;
-
-function typeWriter(){
-  if(i < greeting.length){
-    title.innerHTML += greeting.charAt(i);
-    i++;
-    setTimeout(typeWriter, 35);
-  }
-}
-typeWriter();
-
-async function send(){
-  const input = document.getElementById("msg");
-  const chat = document.getElementById("chat");
-  const page = document.getElementById("page");
-  const message = input.value.trim();
-
-  if(!message && !selectedImage) return;
-
-  page.classList.add("chat-mode");
-
-  if(message){
-    addMessage(message, "user");
-  }
-
-  input.value = "";
-  input.blur();
-
-  const typing = document.createElement("div");
-  typing.className = "typing";
-  typing.innerText = "Jack is thinking...";
-  chat.appendChild(typing);
-  scrollDown();
-
-  const res = await fetch("/chat", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      message: message || "What do you see in this image?",
-      image: selectedImage
-    })
-  });
-
-  const data = await res.json();
-
-  typing.remove();
-  addMessage(data.reply, "bot");
-  speakJack(data.reply);
-
-  selectedImage = null;
-}
-
-function addMessage(text, type){
-  const chat = document.getElementById("chat");
-  const div = document.createElement("div");
-  div.className = type;
-  div.innerText = text;
-  chat.appendChild(div);
-  scrollDown();
-}
-
-function scrollDown(){
-  setTimeout(() => {
-    const chat = document.getElementById("chat");
-    const last = chat.lastElementChild;
-    if (last) {
-      last.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
-  }, 120);
-}
-
-function handleEnter(event){
-  if(event.key === "Enter") send();
-}
-
-document.getElementById("imageUpload").addEventListener("change", function(event){
-  const file = event.target.files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function(e){
-    selectedImage = e.target.result;
-
-    const chat = document.getElementById("chat");
-    const page = document.getElementById("page");
-    page.classList.add("chat-mode");
-
-    const img = document.createElement("img");
-    img.src = e.target.result;
-    img.style.maxWidth = "280px";
-    img.style.borderRadius = "18px";
-    img.style.display = "block";
-    img.style.marginLeft = "auto";
     img.style.marginBottom = "18px";
     img.style.cursor = "pointer";
 
@@ -444,6 +71,7 @@ let mediaRecorder;
 let audioChunks = [];
 
 async function startVoiceMode(){
+  await unlockAudio();
   try{
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -486,6 +114,193 @@ async function startVoiceMode(){
   }
 }
 
+
+function setPrompt(text){
+  const input = document.getElementById("msg");
+  if(input){
+    input.value = text;
+    input.focus();
+  }
+}
+
+let voiceModeActive = false;
+let audioUnlocked = false;
+let voiceReplyEnabled = false;
+
+async function startVoiceMode(){
+  voiceModeActive = true;
+  voiceReplyEnabled = true;
+  document.getElementById("voiceOverlay").style.display = "flex";
+  voiceLoop();
+}
+
+function stopVoiceMode(){
+  voiceModeActive = false;
+  voiceReplyEnabled = false;
+  document.getElementById("voiceOverlay").style.display = "none";
+}
+
+async function recordVoiceOnce(){
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio:{
+      echoCancellation:true,
+      noiseSuppression:true,
+      autoGainControl:true
+    }
+  });
+  const recorder = new MediaRecorder(stream);
+  let chunks = [];
+
+  recorder.ondataavailable = e => chunks.push(e.data);
+  await new Promise(resolve => setTimeout(resolve, 250));
+  recorder.start();
+
+  await new Promise(resolve => setTimeout(resolve, 3000));
+
+  recorder.stop();
+  stream.getTracks().forEach(t => t.stop());
+
+  await new Promise(resolve => recorder.onstop = resolve);
+
+  return new Blob(chunks, {type:"audio/webm"});
+}
+
+async function transcribeBlob(blob){
+  const formData = new FormData();
+  formData.append("audio", blob, "voice.webm");
+
+  const res = await fetch("/transcribe", {
+    method:"POST",
+    body:formData
+  });
+
+  const data = await res.json();
+  return data.text || "";
+}
+
+async function speakJack(text){
+  const res = await fetch("/voice", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({text:text})
+  });
+
+  if(!res.ok){
+    console.log("Voice error");
+    return;
+  }
+
+  const blob = await res.blob();
+  const audioUrl = URL.createObjectURL(blob);
+  const audio = new Audio(audioUrl);
+  audio.setAttribute("playsinline", "true");
+  audio.preload = "auto";
+
+  await new Promise(resolve => {
+    audio.onended = resolve;
+    audio.onerror = resolve;
+    audio.play().then(()=>{}).catch(err => {
+      console.log("AUDIO PLAY ERROR:", err);
+      resolve();
+    });
+  });
+}
+
+
+
+async function voiceLoop(){
+  while(voiceModeActive){
+    try{
+      document.getElementById("voiceStatus").innerText = "Listening...";
+
+      const audioBlob = await recordVoiceOnce();
+      if(!voiceModeActive) break;
+
+      document.getElementById("voiceStatus").innerText = "Thinking...";
+      const spokenText = await transcribeBlob(audioBlob);
+
+      if(!spokenText || spokenText.length < 2){
+        continue;
+      }
+
+      document.getElementById("msg").value = spokenText;
+
+      const reply = await send();
+      const finalReply = reply || window.lastJackReply;
+
+      if(!voiceModeActive) break;
+
+      document.getElementById("voiceStatus").innerText = "Speaking...";
+
+      if(finalReply){
+        const played = await speakJack(finalReply);
+        if(!played){
+          document.querySelectorAll(".tap-hear-btn").forEach(e => e.remove());
+          const btn = document.createElement("button");
+          btn.innerText = "🔊 Play reply";
+          btn.className = "voice-stop tap-hear-btn";
+          btn.onclick = async () => {
+            await speakJack(finalReply);
+            btn.remove();
+          };
+          document.getElementById("voiceOverlay").appendChild(btn);
+        }
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+    }catch(e){
+      console.log("VOICE LOOP ERROR:", e);
+      document.getElementById("voiceStatus").innerText = "Voice error";
+      await new Promise(resolve => setTimeout(resolve, 1200));
+    }
+  }
+}
+
+function typeText(element, text, speed=18){
+  return new Promise(resolve => {
+    let i = 0;
+    element.innerHTML = "";
+    function typing(){
+      if(i < text.length){
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, speed);
+      }else{
+        resolve();
+      }
+    }
+    typing();
+  });
+}
+
+
+
+
+
+async function unlockAudio(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state === "suspended"){ await ctx.resume(); }
+    audioUnlocked = true;
+  }catch(e){
+    console.log("unlock audio failed", e);
+  }
+}
+
+
+async function testVoice(){
+  await speakJack("Hello, I am Jack.");
+}
+
 </script>
+
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-orb" id="voiceOrb"></div>
+  <div class="voice-status" id="voiceStatus">Listening...</div>
+  <div class="voice-sub">Talk to Jack naturally</div>
+  <button class="voice-stop" onclick="stopVoiceMode()">Stop</button>
+</div>
+
 </body>
 </html>
