@@ -756,7 +756,18 @@ async function voiceLoop(){
       document.getElementById("voiceStatus").innerText = "Speaking...";
 
       if(finalReply){
-        await speakJack(finalReply);
+        const played = await speakJack(finalReply);
+        if(!played){
+          document.querySelectorAll(".tap-hear-btn").forEach(e => e.remove());
+          const btn = document.createElement("button");
+          btn.innerText = "🔊 Play reply";
+          btn.className = "voice-stop tap-hear-btn";
+          btn.onclick = async () => {
+            await speakJack(finalReply);
+            btn.remove();
+          };
+          document.getElementById("voiceOverlay").appendChild(btn);
+        }
       }
 
       await new Promise(resolve => setTimeout(resolve, 200));
