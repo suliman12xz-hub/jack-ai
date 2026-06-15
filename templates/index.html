@@ -476,7 +476,7 @@ await new Promise(resolve => {
   setTimeout(async () => {
     thinking.innerHTML = "";
     await typeText(thinking, data.reply, 16);
-    if(voiceModeActive){ await speakJack(data.reply); }
+    // typed chat stays silent
     resolve();
   }, 400);
 });
@@ -729,6 +729,7 @@ async function speakJack(text){
 }
 
 
+
 async function voiceLoop(){
   while(voiceModeActive){
     try{
@@ -747,12 +748,12 @@ async function voiceLoop(){
       document.getElementById("msg").value = spokenText;
 
       const reply = await send();
+      const finalReply = reply || window.lastJackReply;
 
       if(!voiceModeActive) break;
 
       document.getElementById("voiceStatus").innerText = "Speaking...";
 
-      const finalReply = reply || window.lastJackReply;
       if(finalReply){
         await speakJack(finalReply);
       }
@@ -766,8 +767,6 @@ async function voiceLoop(){
     }
   }
 }
-
-
 
 function typeText(element, text, speed=18){
   return new Promise(resolve => {
