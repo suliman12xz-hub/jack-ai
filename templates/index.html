@@ -471,14 +471,17 @@ thinking.innerHTML = "<div>Jack is thinking...</div><div class='thinking-bar'></
 chat.appendChild(thinking);
 chat.scrollTop = chat.scrollHeight;
 
-setTimeout(async () => {
-  thinking.innerHTML = "";
-  await typeText(thinking, data.reply, 16);
-  if(voiceReplyEnabled){ speakJack(data.reply); }
-}, 400);
-
+await new Promise(resolve => {
+  setTimeout(async () => {
+    thinking.innerHTML = "";
+    await typeText(thinking, data.reply, 16);
+    if(voiceReplyEnabled){ await speakJack(data.reply); }
+    resolve();
+  }, 400);
+});
 
   selectedImage = null;
+  return data.reply;
 }
 
 function addMessage(text, type){
@@ -733,10 +736,11 @@ async function voiceLoop(){
       }
 
       document.getElementById("msg").value = text;
-      await send();
+      document.getElementById("voiceStatus").innerText = "Thinking...";
+      const reply = await send();
 
       document.getElementById("voiceStatus").innerText = "Speaking...";
-      await speakJack(data.reply);
+      if(reply){ await speakJack(reply); }
       await new Promise(resolve => setTimeout(resolve, 500));
 
     }catch(e){
