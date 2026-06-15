@@ -721,35 +721,42 @@ async function speakJack(text){
   });
 }
 
+
 async function voiceLoop(){
   while(voiceModeActive){
     try{
       document.getElementById("voiceStatus").innerText = "Listening...";
+
       const audioBlob = await recordVoiceOnce();
       if(!voiceModeActive) break;
 
       document.getElementById("voiceStatus").innerText = "Thinking...";
-      const text = await transcribeBlob(audioBlob);
+      const spokenText = await transcribeBlob(audioBlob);
 
-      if(!text || text.length < 2){
+      if(!spokenText || spokenText.length < 2){
         continue;
       }
 
-      document.getElementById("msg").value = text;
-      document.getElementById("voiceStatus").innerText = "Thinking...";
+      document.getElementById("msg").value = spokenText;
+
       const reply = await send();
 
+      if(!voiceModeActive) break;
+
       document.getElementById("voiceStatus").innerText = "Speaking...";
-      if(reply){ await speakJack(reply); }
+
+      // send() already speaks when voiceReplyEnabled is true
+
       await new Promise(resolve => setTimeout(resolve, 500));
 
     }catch(e){
-      console.log(e);
-      document.getElementById("voiceStatus").innerText = "Mic error";
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log("VOICE LOOP ERROR:", e);
+      document.getElementById("voiceStatus").innerText = "Voice error";
+      await new Promise(resolve => setTimeout(resolve, 1200));
     }
   }
 }
+
 
 
 function typeText(element, text, speed=18){
