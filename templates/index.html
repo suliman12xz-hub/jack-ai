@@ -756,10 +756,7 @@ async function voiceLoop(){
       document.getElementById("voiceStatus").innerText = "Speaking...";
 
       if(finalReply){
-        const btn = document.createElement("button");
-        btn.className = "voice-stop";
-        btn.onclick = () => speakJack(finalReply);
-        document.getElementById("voiceOverlay").appendChild(btn);
+        await speakJack(finalReply);
       }
 
       await new Promise(resolve => setTimeout(resolve, 200));
