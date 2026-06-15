@@ -757,7 +757,6 @@ async function voiceLoop(){
 
       if(finalReply){
         const btn = document.createElement("button");
-        btn.innerText = "🔊 Tap to hear Jack";
         btn.className = "voice-stop";
         btn.onclick = () => speakJack(finalReply);
         document.getElementById("voiceOverlay").appendChild(btn);
