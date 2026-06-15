@@ -678,7 +678,7 @@ async function recordVoiceOnce(){
   await new Promise(resolve => setTimeout(resolve, 250));
   recorder.start();
 
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise(resolve => setTimeout(resolve, 3000));
 
   recorder.stop();
   stream.getTracks().forEach(t => t.stop());
