@@ -675,10 +675,10 @@ async function recordVoiceOnce(){
   let chunks = [];
 
   recorder.ondataavailable = e => chunks.push(e.data);
-  await new Promise(resolve => setTimeout(resolve, 800));
+  await new Promise(resolve => setTimeout(resolve, 250));
   recorder.start();
 
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await new Promise(resolve => setTimeout(resolve, 1500));
 
   recorder.stop();
   stream.getTracks().forEach(t => t.stop());
@@ -759,7 +759,7 @@ async function voiceLoop(){
         await speakJack(finalReply);
       }
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 200));
 
     }catch(e){
       console.log("VOICE LOOP ERROR:", e);
