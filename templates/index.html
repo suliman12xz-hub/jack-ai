@@ -675,6 +675,7 @@ async function recordVoiceOnce(){
   let chunks = [];
 
   recorder.ondataavailable = e => chunks.push(e.data);
+  await new Promise(resolve => setTimeout(resolve, 800));
   recorder.start();
 
   await new Promise(resolve => setTimeout(resolve, 5000));
