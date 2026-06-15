@@ -476,7 +476,7 @@ await new Promise(resolve => {
   setTimeout(async () => {
     thinking.innerHTML = "";
     await typeText(thinking, data.reply, 16);
-    // no voice when typing
+    if(voiceModeActive){ await speakJack(data.reply); }
     resolve();
   }, 400);
 });
