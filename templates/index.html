@@ -670,7 +670,13 @@ function stopVoiceMode(){
 }
 
 async function recordVoiceOnce(){
-  const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio:{
+      echoCancellation:true,
+      noiseSuppression:true,
+      autoGainControl:true
+    }
+  });
   const recorder = new MediaRecorder(stream);
   let chunks = [];
 
