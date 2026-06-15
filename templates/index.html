@@ -462,6 +462,7 @@ async function send(){
   });
 
   const data = await res.json();
+  window.lastJackReply = data.reply;
 
   typing.remove();
   
@@ -751,8 +752,9 @@ async function voiceLoop(){
 
       document.getElementById("voiceStatus").innerText = "Speaking...";
 
-      if(reply){
-        await speakJack(reply);
+      const finalReply = reply || window.lastJackReply;
+      if(finalReply){
+        await speakJack(finalReply);
       }
 
       await new Promise(resolve => setTimeout(resolve, 500));
