@@ -599,7 +599,7 @@ let mediaRecorder;
 let audioChunks = [];
 
 async function startVoiceMode(){
-  unlockAudio();
+  await unlockAudio();
   try{
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -652,6 +652,7 @@ function setPrompt(text){
 }
 
 let voiceModeActive = false;
+let audioUnlocked = false;
 let voiceReplyEnabled = false;
 
 async function startVoiceMode(){
@@ -713,11 +714,16 @@ async function speakJack(text){
   const blob = await res.blob();
   const audioUrl = URL.createObjectURL(blob);
   const audio = new Audio(audioUrl);
+  audio.setAttribute("playsinline", "true");
+  audio.preload = "auto";
 
   await new Promise(resolve => {
     audio.onended = resolve;
     audio.onerror = resolve;
-    audio.play().catch(resolve);
+    audio.play().then(()=>{}).catch(err => {
+      console.log("AUDIO PLAY ERROR:", err);
+      resolve();
+    });
   });
 }
 
@@ -782,12 +788,14 @@ function typeText(element, text, speed=18){
 
 
 
-function unlockAudio(){
+async function unlockAudio(){
   try{
-    const a = new Audio();
-    a.muted = true;
-    a.play().catch(()=>{});
-  }catch(e){}
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state === "suspended"){ await ctx.resume(); }
+    audioUnlocked = true;
+  }catch(e){
+    console.log("unlock audio failed", e);
+  }
 }
 
 
