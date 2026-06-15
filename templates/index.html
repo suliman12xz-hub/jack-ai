@@ -595,6 +595,7 @@ let mediaRecorder;
 let audioChunks = [];
 
 async function startVoiceMode(){
+  unlockAudio();
   try{
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -764,6 +765,15 @@ function typeText(element, text, speed=18){
 
 
 
+
+
+function unlockAudio(){
+  try{
+    const a = new Audio();
+    a.muted = true;
+    a.play().catch(()=>{});
+  }catch(e){}
+}
 
 </script>
 
