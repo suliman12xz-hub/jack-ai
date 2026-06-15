@@ -736,7 +736,8 @@ async function voiceLoop(){
       await send();
 
       document.getElementById("voiceStatus").innerText = "Speaking...";
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await speakJack(data.reply);
+      await new Promise(resolve => setTimeout(resolve, 500));
 
     }catch(e){
       console.log(e);
