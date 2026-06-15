@@ -745,7 +745,9 @@ async function voiceLoop(){
 
       document.getElementById("voiceStatus").innerText = "Speaking...";
 
-      // send() already speaks when voiceReplyEnabled is true
+      if(reply){
+        await speakJack(reply);
+      }
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
