@@ -393,6 +393,7 @@ display:block;
 
     <input id="msg" placeholder="Ask Jack" onkeydown="handleEnter(event)">
 
+    <button class="sendBtn" onclick="testVoice()">🔊</button>
     <button class="sendBtn" onclick="startVoiceMode()">🎙️</button>
     <button class="sendBtn" onclick="send()">➜</button>
   </div>
@@ -773,6 +774,11 @@ function unlockAudio(){
     a.muted = true;
     a.play().catch(()=>{});
   }catch(e){}
+}
+
+
+async function testVoice(){
+  await speakJack("Hello, I am Jack.");
 }
 
 </script>
