@@ -718,7 +718,6 @@ async function voiceLoop(){
         if(!played){
           document.querySelectorAll(".tap-hear-btn").forEach(e => e.remove());
           const btn = document.createElement("button");
-          btn.innerText = "🔊 Play reply";
           btn.className = "voice-stop tap-hear-btn";
           btn.onclick = async () => {
             await speakJack(finalReply);
