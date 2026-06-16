@@ -587,8 +587,8 @@ async function speakJack(text){
 
     const blob = await res.blob();
     const audioUrl = URL.createObjectURL(blob);
-    const audio = new Audio(audioUrl);
-    audio.play();
+    jackAudio = new Audio(audioUrl);
+    jackAudio.play();
   } catch(e){
     console.log("Voice failed", e);
   }
@@ -606,6 +606,7 @@ function setPrompt(text){
 let voiceModeActive = false;
 let audioUnlocked = false;
 let voiceReplyEnabled = false;
+let jackAudio = null;
 
 async function startVoiceMode(){
   voiceModeActive = true;
@@ -615,6 +616,11 @@ async function startVoiceMode(){
 }
 
 function stopVoiceMode(){
+  if(jackAudio){
+    jackAudio.pause();
+    jackAudio.currentTime = 0;
+    jackAudio = null;
+  }
   voiceModeActive = false;
   voiceReplyEnabled = false;
   document.getElementById("voiceOverlay").style.display = "none";
@@ -672,14 +678,14 @@ async function speakJack(text){
 
   const blob = await res.blob();
   const audioUrl = URL.createObjectURL(blob);
-  const audio = new Audio(audioUrl);
+  jackAudio = new Audio(audioUrl);
   audio.setAttribute("playsinline", "true");
   audio.preload = "auto";
 
   await new Promise(resolve => {
     audio.onended = resolve;
     audio.onerror = resolve;
-    audio.play().then(()=>{}).catch(err => {
+    jackAudio.play().then(()=>{}).catch(err => {
       console.log("AUDIO PLAY ERROR:", err);
       resolve();
     });
