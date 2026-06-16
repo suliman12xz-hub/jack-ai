@@ -304,7 +304,7 @@
 }
 .voice-status{margin-top:30px;font-size:24px;font-weight:bold;}
 .voice-sub{margin-top:10px;color:#9ca3af;}
-.voice-stop{margin-bottom:0 !important;
+.voice-stop{
   margin-top:35px; border:0; border-radius:999px; padding:14px 26px;
   background:#ef4444; color:white; font-size:18px;
 }
@@ -395,8 +395,7 @@ display:block;
 
     <button class="sendBtn" onclick="testVoice()">🔊</button>
     <button class="sendBtn" onclick="startVoiceMode()">🎙️</button>
-<button class="sendBtn" onclick="startVisionMode()">📷</button>
-
+    <button class="sendBtn" onclick="send()">➜</button>
   </div>
 
   <div id="imageModal" onclick="this.style.display='none'">
@@ -588,8 +587,8 @@ async function speakJack(text){
 
     const blob = await res.blob();
     const audioUrl = URL.createObjectURL(blob);
-    currentAudio = new Audio(audioUrl);
-    currentAudio.play();
+    const audio = new Audio(audioUrl);
+    audio.play();
   } catch(e){
     console.log("Voice failed", e);
   }
@@ -607,7 +606,6 @@ function setPrompt(text){
 let voiceModeActive = false;
 let audioUnlocked = false;
 let voiceReplyEnabled = false;
-let currentAudio = null;
 
 async function startVoiceMode(){
   voiceModeActive = true;
@@ -618,11 +616,6 @@ async function startVoiceMode(){
 
 function stopVoiceMode(){
   voiceModeActive = false;
-  if(currentAudio){
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    currentAudio = null;
-  }
   voiceReplyEnabled = false;
   document.getElementById("voiceOverlay").style.display = "none";
 }
@@ -679,14 +672,14 @@ async function speakJack(text){
 
   const blob = await res.blob();
   const audioUrl = URL.createObjectURL(blob);
-  currentAudio = new Audio(audioUrl);
+  const audio = new Audio(audioUrl);
   audio.setAttribute("playsinline", "true");
   audio.preload = "auto";
 
   await new Promise(resolve => {
     audio.onended = resolve;
     audio.onerror = resolve;
-    currentAudio.play().then(()=>{}).catch(err => {
+    audio.play().then(()=>{}).catch(err => {
       console.log("AUDIO PLAY ERROR:", err);
       resolve();
     });
@@ -722,7 +715,15 @@ async function voiceLoop(){
       if(finalReply){
         const played = await speakJack(finalReply);
         if(!played){
-          
+          document.querySelectorAll(".tap-hear-btn").forEach(e => e.remove());
+          const btn = document.createElement("button");
+          btn.innerText = "🔊 Play reply";
+          btn.className = "voice-stop tap-hear-btn";
+          btn.onclick = async () => {
+            await speakJack(finalReply);
+            btn.remove();
+          };
+          document.getElementById("voiceOverlay").appendChild(btn);
         }
       }
 
@@ -772,66 +773,6 @@ async function testVoice(){
   await speakJack("Hello, I am Jack.");
 }
 
-
-let visionStream;
-
-async function startVisionMode(){
-  setTimeout(startVisionAuto, 1500);
-  document.getElementById("visionBox").style.display = "flex";
-  visionStream = await navigator.mediaDevices.getUserMedia({video:true,audio:false});
-  document.getElementById("visionCamera").srcObject = visionStream;
-}
-
-function stopVisionMode(){
-  stopVisionAuto();
-  document.getElementById("visionBox").style.display = "none";
-  if(visionStream){
-    visionStream.getTracks().forEach(track => track.stop());
-  }
-}
-
-
-let visionInterval = null;
-
-async function analyzeVision(){
-  const video = document.getElementById("visionCamera");
-  const canvas = document.createElement("canvas");
-
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0);
-
-  const image = canvas.toDataURL("image/jpeg", 0.7);
-
-  const res = await fetch("/vision", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({image:image})
-  });
-
-  const data = await res.json();
-  console.log("Jack sees:", data.reply);
-
-  const msg = document.getElementById("messages");
-  if(msg){
-    msg.innerHTML += `<div class="bot">👁️ ${data.reply}</div>`;
-  }
-}
-
-function startVisionAuto(){
-  analyzeVision();
-  visionInterval = setInterval(analyzeVision, 5000);
-}
-
-function stopVisionAuto(){
-  if(visionInterval){
-    clearInterval(visionInterval);
-    visionInterval = null;
-  }
-}
-
 </script>
 
 <div class="voice-overlay" id="voiceOverlay">
@@ -839,13 +780,6 @@ function stopVisionAuto(){
   <div class="voice-status" id="voiceStatus">Listening...</div>
   <div class="voice-sub">Talk to Jack naturally</div>
   <button class="voice-stop" onclick="stopVoiceMode()">Stop</button>
-</div>
-
-
-<div id="visionBox" style="display:none;position:fixed;inset:0;background:#020510;z-index:99999;align-items:center;justify-content:center;flex-direction:column;">
-  <video id="visionCamera" autoplay playsinline style="transform:scaleX(-1);width:80%;max-width:750px;border-radius:25px;box-shadow:0 0 40px #008cff;transform:scaleX(-1);"></video>
-  <p style="color:white;margin:20px;font-size:22px;">Jack Vision Mode</p>
-  <button onclick="stopVisionMode()" style="padding:14px 30px;border-radius:30px;border:0;background:#ff2d55;color:white;font-size:18px;">STOP</button>
 </div>
 
 </body>
