@@ -424,30 +424,6 @@ def voice():
 
     return Response(r.content, mimetype="audio/mpeg")
 
-
-@app.route("/vision", methods=["POST"])
-def vision():
-    data = request.get_json()
-    image = data.get("image")
-
-    if not image:
-        return jsonify({"reply": "No image received"}), 400
-
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "input_text", "text": "You are Jack Vision. Describe what you see shortly, like Jarvis."},
-                    {"type": "input_image", "image_url": image}
-                ]
-            }
-        ]
-    )
-
-    return jsonify({"reply": response.output_text})
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)

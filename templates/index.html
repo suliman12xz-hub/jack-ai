@@ -395,6 +395,7 @@ display:block;
 
     <button class="sendBtn" onclick="testVoice()">🔊</button>
     <button class="sendBtn" onclick="startVoiceMode()">🎙️</button>
+<button class="sendBtn" onclick="startVisionMode()">📷</button>
     <button class="sendBtn" onclick="send()">➜</button>
   </div>
 
@@ -773,6 +774,22 @@ async function testVoice(){
   await speakJack("Hello, I am Jack.");
 }
 
+
+let visionStream;
+
+async function startVisionMode(){
+  document.getElementById("visionBox").style.display = "flex";
+  visionStream = await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+  document.getElementById("visionCamera").srcObject = visionStream;
+}
+
+function stopVisionMode(){
+  document.getElementById("visionBox").style.display = "none";
+  if(visionStream){
+    visionStream.getTracks().forEach(track => track.stop());
+  }
+}
+
 </script>
 
 <div class="voice-overlay" id="voiceOverlay">
@@ -780,6 +797,13 @@ async function testVoice(){
   <div class="voice-status" id="voiceStatus">Listening...</div>
   <div class="voice-sub">Talk to Jack naturally</div>
   <button class="voice-stop" onclick="stopVoiceMode()">Stop</button>
+</div>
+
+
+<div id="visionBox" style="display:none;position:fixed;inset:0;background:#020510;z-index:99999;align-items:center;justify-content:center;flex-direction:column;">
+  <video id="visionCamera" autoplay playsinline style="transform:scaleX(-1);width:80%;max-width:750px;border-radius:25px;box-shadow:0 0 40px #008cff;transform:scaleX(-1);"></video>
+  <p style="color:white;margin:20px;font-size:22px;">Jack Vision Mode</p>
+  <button onclick="stopVisionMode()" style="padding:14px 30px;border-radius:30px;border:0;background:#ff2d55;color:white;font-size:18px;">STOP</button>
 </div>
 
 </body>
