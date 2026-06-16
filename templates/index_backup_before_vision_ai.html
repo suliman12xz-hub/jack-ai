@@ -778,59 +778,15 @@ async function testVoice(){
 let visionStream;
 
 async function startVisionMode(){
-  setTimeout(startVisionAuto, 1500);
   document.getElementById("visionBox").style.display = "flex";
   visionStream = await navigator.mediaDevices.getUserMedia({video:true,audio:false});
   document.getElementById("visionCamera").srcObject = visionStream;
 }
 
 function stopVisionMode(){
-  stopVisionAuto();
   document.getElementById("visionBox").style.display = "none";
   if(visionStream){
     visionStream.getTracks().forEach(track => track.stop());
-  }
-}
-
-
-let visionInterval = null;
-
-async function analyzeVision(){
-  const video = document.getElementById("visionCamera");
-  const canvas = document.createElement("canvas");
-
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0);
-
-  const image = canvas.toDataURL("image/jpeg", 0.7);
-
-  const res = await fetch("/vision", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({image:image})
-  });
-
-  const data = await res.json();
-  console.log("Jack sees:", data.reply);
-
-  const msg = document.getElementById("messages");
-  if(msg){
-    msg.innerHTML += `<div class="bot">👁️ ${data.reply}</div>`;
-  }
-}
-
-function startVisionAuto(){
-  analyzeVision();
-  visionInterval = setInterval(analyzeVision, 5000);
-}
-
-function stopVisionAuto(){
-  if(visionInterval){
-    clearInterval(visionInterval);
-    visionInterval = null;
   }
 }
 
